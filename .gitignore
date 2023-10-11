@@ -1,0 +1,8 @@
+/.fleet
+/.idea
+/.vscode
+
+*.tmp
+*.log
+
+.DS_Store
