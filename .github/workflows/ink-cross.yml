@@ -3,10 +3,10 @@ name: Build Ink Cross Images
 on:
   push:
     branches: [ main ]
-    paths: [ .github/workflows/ink-cross.yml, cmake/**, docker/**, scripts/** ]
+    paths: [ .github/workflows/ink-cross.yml, cmake/**, docker/**, scripts/**, build-args.sh ]
   pull_request:
     branches: [ main ]
-    paths: [ .github/workflows/ink-cross.yml, cmake/**, docker/**, scripts/** ]
+    paths: [ .github/workflows/ink-cross.yml, cmake/**, docker/**, scripts/**, build-args.sh ]
   workflow_dispatch:
   schedule:
     - cron: '0 6 * * 6'
