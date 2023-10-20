@@ -15,6 +15,8 @@ chmod +x llvm.sh
 set -euxo pipefail # Since the first time will always fail.
 ./llvm.sh "$LLVM_VERSION"
 
+apt install -y --no-install-recommends libc++-"$LLVM_VERSION"-dev
+
 popd
 rm -rf /tmp/llvm
 
