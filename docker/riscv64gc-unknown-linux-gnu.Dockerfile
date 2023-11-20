@@ -35,8 +35,7 @@ RUN --mount=type=bind,source=./scripts/install-cmake.sh,target=/run.sh /run.sh
 COPY ./cmake/toolchain-gcc.cmake /opt/toolchain.cmake
 
 # Openssl
-ENV OPENSSL_INCLUDE_DIR=/usr/local/$CROSS_TOOLCHAIN/include
-ENV OPENSSL_LIB_DIR=/usr/local/$CROSS_TOOLCHAIN/lib
+ENV OPENSSL_DIR=$CROSS_SYSROOT
 RUN --mount=type=bind,source=./scripts/install-openssl-gnu.sh,target=/run.sh /run.sh
 
 # Cargo prebuilt
