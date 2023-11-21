@@ -46,8 +46,7 @@ RUN --mount=type=bind,source=./scripts/install-clang.sh,target=/run.sh /run.sh
 RUN --mount=type=bind,source=./scripts/install-musl.sh,target=/run.sh /run.sh
 
 # Openssl
-ENV OPENSSL_INCLUDE_DIR=/usr/local/$CROSS_TOOLCHAIN/include
-ENV OPENSSL_LIB_DIR=/usr/local/$CROSS_TOOLCHAIN/lib
+ENV OPENSSL_DIR=$CROSS_SYSROOT
 RUN --mount=type=bind,source=./scripts/install-openssl-musl.sh,target=/run.sh /run.sh
 
 # Cargo prebuilt
