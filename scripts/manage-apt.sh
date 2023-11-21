@@ -15,7 +15,8 @@ apt install -y --no-install-recommends \
     libtool \
     git \
     perl \
-    xz-utils
+    xz-utils \
+    ninja-build
 
 if [ ! -z "$GCC_PKGS" ]; then
     apt install -y --no-install-recommends $GCC_PKGS
