@@ -7,7 +7,7 @@ ARG EXT_CURL_CMD="curl --retry 3 -fsSL"
 # Versioning
 ARG RUSTUP_VERSION=1.26.0
 ARG CMAKE_VERSION=3.27.7
-ARG OPENSSL_VERSION=openssl-3.1.3
+ARG OPENSSL_VERSION=openssl-3.2.0
 
 # Do not set
 ARG DEBIAN_FRONTEND=noninteractive
@@ -19,7 +19,7 @@ ARG CROSS_TOOLCHAIN=riscv64-linux-gnu
 ARG CROSS_TOOLCHAIN_PREFIX="$CROSS_TOOLCHAIN"-
 ARG CROSS_SYSROOT=/usr/"$CROSS_TOOLCHAIN"
 
-ARG OPENSSL_COMBO=linux-generic64
+ARG OPENSSL_COMBO=linux64-riscv64
 
 ARG GCC_PKGS="g++-riscv64-linux-gnu libc6-dev-riscv64-cross"
 
