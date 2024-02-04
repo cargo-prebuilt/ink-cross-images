@@ -1,4 +1,4 @@
-name: Build Ink Cross Images
+name: Build Ink Cross Images (MacOS 14)
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
     - cron: '0 6 * * 6'
 
 env:
-  platforms: linux/amd64,linux/arm64
+  platforms: linux/arm64
 
 jobs:
   ink-cross:
@@ -29,7 +29,7 @@ jobs:
           - s390x-unknown-linux-gnu
           - x86_64-unknown-linux-gnu
           - x86_64-unknown-linux-musl
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
