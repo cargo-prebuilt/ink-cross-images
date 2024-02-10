@@ -70,7 +70,6 @@ jobs:
           tags: ghcr.io/cargo-prebuilt/ink-cross:${{ env.LATEST_RUST_VERSION }}-${{ matrix.target }}
           build-args: |
             RUST_VERSION=${{ env.LATEST_RUST_VERSION }}
-            RUSTUP_VERSION=${{ env.RUSTUP_VERSION }}
             CMAKE_VERSION=${{ env.CMAKE_VERSION }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             LLVM_VERSION=${{ env.LLVM_VERSION }}
@@ -82,7 +81,6 @@ jobs:
             tech.harmless.ink-cross.repo="${{ github.repositoryUrl }}"
             tech.harmless.ink-cross.build_date="${{ env.BUILD_DATE }}"
             tech.harmless.ink-cross.version.rust="${{ env.LATEST_RUST_VERSION }}"
-            tech.harmless.ink-cross.version.rustup="${{ env.RUSTUP_VERSION }}"
             tech.harmless.ink-cross.version.cmake="${{ env.CMAKE_VERSION }}"
             tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
