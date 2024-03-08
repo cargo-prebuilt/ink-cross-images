@@ -5,8 +5,8 @@ FROM debian:stable-slim
 ARG EXT_CURL_CMD="curl --retry 3 -fsSL"
 
 # Versioning
-ARG CMAKE_VERSION=3.27.7
-ARG OPENSSL_VERSION=openssl-3.1.3
+ARG CMAKE_VERSION=3.28.3
+ARG OPENSSL_VERSION=openssl-3.2.1
 
 # Do not set
 ARG DEBIAN_FRONTEND=noninteractive

@@ -27,7 +27,7 @@ rustup component add --toolchain $RUST_VERSION clippy
 rustup component add --toolchain $RUST_VERSION rustfmt
 
 if [ "$RUST_VERSION" = "nightly" ]; then
-    rustup toolchain install nightly --allow-downgrade -c rustfmt,clippy,miri
+    rustup toolchain install nightly --allow-downgrade -c rust-src,rustfmt,clippy,miri
 fi
 
 popd
