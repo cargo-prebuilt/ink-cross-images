@@ -11,9 +11,6 @@ on:
   schedule:
     - cron: '0 6 * * 6'
 
-env:
-  platforms: linux/amd64,linux/arm64
-
 jobs:
   ink-cross:
     strategy:
@@ -58,6 +55,13 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: echo "OPENSSL_VERSION=$(gh release view -R openssl/openssl --json tagName --jq '.tagName')" >> $GITHUB_ENV
 
+      - name: Platforms
+        if: ${{ github.event_name == 'pull_request' }}
+        run: echo "PLATFORMS=linux/amd64" >> $GITHUB_ENV
+      - name: Platforms
+        if: ${{ github.event_name != 'pull_request' }}
+        run: echo "PLATFORMS=linux/amd64,linux/arm64" >> $GITHUB_ENV
+
       - name: Build and push Docker images (pinned)
         uses: docker/build-push-action@v5
         with:
@@ -66,6 +70,7 @@ jobs:
           no-cache: true
           cache-to: type=inline
           pull: true
+          load: ${{ github.event_name == 'pull_request' }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/cargo-prebuilt/ink-cross:${{ env.LATEST_RUST_VERSION }}-${{ matrix.target }}
           build-args: |
@@ -86,8 +91,22 @@ jobs:
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
             tech.harmless.ink-cross.version.musl="${{ env.MUSL_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
-          platforms: ${{ env.platforms }}
+          platforms: ${{ env.PLATFORMS }}
           builder: ${{ steps.buildx.outputs.name }}
+
+      - name: Test Pull
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          docker image save \
+          ghcr.io/cargo-prebuilt/ink-cross:${{ env.LATEST_RUST_VERSION }}-${{ matrix.target }} \
+          -o ${{ env.LATEST_RUST_VERSION }}-${{ matrix.target }}.tar
+      - name: Artifact
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.LATEST_RUST_VERSION }}-${{ matrix.target }}
+          path: |
+            ${{ env.LATEST_RUST_VERSION }}-${{ matrix.target }}.tar
 
       - name: Build and push Docker images (stable)
         uses: docker/build-push-action@v5
@@ -118,7 +137,7 @@ jobs:
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
             tech.harmless.ink-cross.version.musl="${{ env.MUSL_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
-          platforms: ${{ env.platforms }}
+          platforms: ${{ env.PLATFORMS }}
           builder: ${{ steps.buildx.outputs.name }}
 
       - name: Build and push Docker images (beta)
@@ -150,7 +169,7 @@ jobs:
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
             tech.harmless.ink-cross.version.musl="${{ env.MUSL_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
-          platforms: ${{ env.platforms }}
+          platforms: ${{ env.PLATFORMS }}
           builder: ${{ steps.buildx.outputs.name }}
 
       - name: Build and push Docker images (nightly)
@@ -182,5 +201,5 @@ jobs:
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
             tech.harmless.ink-cross.version.musl="${{ env.MUSL_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
-          platforms: ${{ env.platforms }}
+          platforms: ${{ env.PLATFORMS }}
           builder: ${{ steps.buildx.outputs.name }}
