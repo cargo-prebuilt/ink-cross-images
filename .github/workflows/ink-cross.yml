@@ -94,13 +94,13 @@ jobs:
           platforms: ${{ env.PLATFORMS }}
           builder: ${{ steps.buildx.outputs.name }}
 
-      - name: Test Pull
+      - name: Test Pull (Pinned)
         if: ${{ github.event_name == 'pull_request' }}
         run: |
           docker image save \
           ghcr.io/cargo-prebuilt/ink-cross:${{ env.LATEST_RUST_VERSION }}-${{ matrix.target }} \
           -o ${{ env.LATEST_RUST_VERSION }}-${{ matrix.target }}.tar
-      - name: Artifact
+      - name: Artifact (Pinned)
         if: ${{ github.event_name == 'pull_request' }}
         uses: actions/upload-artifact@v4
         with:
@@ -179,6 +179,7 @@ jobs:
           file: ./docker/${{ matrix.target }}.Dockerfile
           cache-from: type=inline
           pull: true
+          load: ${{ github.event_name == 'pull_request' }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }}
           build-args: |
@@ -203,3 +204,17 @@ jobs:
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
           platforms: ${{ env.PLATFORMS }}
           builder: ${{ steps.buildx.outputs.name }}
+
+      - name: Test Pull (Nightly)
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          docker image save \
+          ghcr.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }} \
+          -o nightly-${{ matrix.target }}.tar
+      - name: Artifact (Nightly)
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-${{ matrix.target }}
+          path: |
+            nightly-${{ matrix.target }}.tar
