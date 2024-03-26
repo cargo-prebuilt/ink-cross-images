@@ -94,7 +94,7 @@ jobs:
           platforms: ${{ env.PLATFORMS }}
           builder: ${{ steps.buildx.outputs.name }}
 
-      - name: Test Pull (Pinned)
+      - name: Export Pull (Pinned)
         if: ${{ github.event_name == 'pull_request' }}
         run: |
           docker image save \
@@ -205,7 +205,7 @@ jobs:
           platforms: ${{ env.PLATFORMS }}
           builder: ${{ steps.buildx.outputs.name }}
 
-      - name: Test Pull (Nightly)
+      - name: Export Pull (Nightly)
         if: ${{ github.event_name == 'pull_request' }}
         run: |
           docker image save \
