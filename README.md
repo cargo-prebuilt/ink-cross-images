@@ -6,6 +6,11 @@ Images are updated weekly.
 
 Built for x86_64 (amd64) and aarch64 (arm64) platforms.
 
+## Pull
+
+- From GitHub `docker pull ghcr.io/cargo-prebuilt/ink-cross:$DIST-$TARGET`
+- From Quay `docker pull quay.io/cargo-prebuilt/ink-cross:$DIST-$TARGET`
+
 ## Dists
 
 There are 4 dists:
