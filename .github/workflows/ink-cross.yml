@@ -105,7 +105,7 @@ jobs:
           cache-from: type=inline
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/cargo-prebuilt/ink-cross:stable-${{ matrix.target }}
+          tags: ghcr.io/cargo-prebuilt/ink-cross:stable-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:stable-${{ matrix.target }}
           build-args: |
             RUST_VERSION=stable
             RUSTUP_VERSION=${{ env.RUSTUP_VERSION }}
@@ -137,7 +137,7 @@ jobs:
           cache-from: type=inline
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/cargo-prebuilt/ink-cross:beta-${{ matrix.target }}
+          tags: ghcr.io/cargo-prebuilt/ink-cross:beta-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:beta-${{ matrix.target }}
           build-args: |
             RUST_VERSION=beta
             RUSTUP_VERSION=${{ env.RUSTUP_VERSION }}
@@ -169,7 +169,7 @@ jobs:
           cache-from: type=inline
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }}
+          tags: ghcr.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }}
           build-args: |
             RUST_VERSION=nightly
             RUSTUP_VERSION=${{ env.RUSTUP_VERSION }}
