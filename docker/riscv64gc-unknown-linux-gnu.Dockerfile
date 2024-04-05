@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM debian:stable-slim
+FROM debian:12-slim
 
 # Build CMDS
 ARG EXT_CURL_CMD="curl --retry 3 -fsSL"
