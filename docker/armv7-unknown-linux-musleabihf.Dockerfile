@@ -22,7 +22,7 @@ ARG CROSS_SYSROOT=/usr/"$CROSS_TOOLCHAIN"
 
 ARG OPENSSL_COMBO=linux-armv4
 
-ARG GCC_PKGS="libgcc-12-dev-armel-cross"
+ARG GCC_PKGS="libgcc-12-dev-armhf-cross"
 
 ARG LLVM_TARGET=$RUST_TARGET
 
