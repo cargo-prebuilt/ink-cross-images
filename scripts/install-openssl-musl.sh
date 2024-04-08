@@ -5,10 +5,8 @@ set -euxo pipefail
 mkdir -p /tmp/openssl
 pushd /tmp/openssl
 
-$EXT_CURL_CMD "https://www.openssl.org/source/$OPENSSL_VERSION.tar.gz" -o openssl.tar.gz
-tar -xzf openssl.tar.gz
-rm -f openssl.tar.gz
-cd "./$OPENSSL_VERSION"
+git clone --depth=1 -b "$OPENSSL_VERSION" https://github.com/openssl/openssl.git openssl
+cd ./openssl
 
 AR="$CROSS_TOOLCHAIN_PREFIX"ar CC="$CROSS_TOOLCHAIN_PREFIX"clang ./Configure $OPENSSL_COMBO \
     --libdir=lib --prefix="$CROSS_SYSROOT" --openssldir="/usr/local/$CROSS_TOOLCHAIN/ssl" \
