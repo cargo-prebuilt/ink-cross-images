@@ -61,13 +61,13 @@ ENV CARGO_TARGET_RISCV64GC_UNKNOWN_LINUX_GNU_LINKER="$CROSS_TOOLCHAIN_PREFIX"gcc
     BINDGEN_EXTRA_CLANG_ARGS_riscv64gc_unknown_linux_gnu="--sysroot=$CROSS_SYSROOT" \
     RUST_TEST_THREADS=1 \
     PKG_CONFIG_ALLOW_CROSS_riscv64gc_unknown_linux_gnu=true \
-    PKG_CONFIG_PATH="/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/:${PKG_CONFIG_PATH}" \
+    PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/:${PKG_CONFIG_PATH}" \
     CROSS_CMAKE_SYSTEM_NAME=Linux \
     CROSS_CMAKE_SYSTEM_PROCESSOR=riscv64gc \
     CROSS_CMAKE_CRT=gnu \
     CROSS_CMAKE_OBJECT_FLAGS="-ffunction-sections -fdata-sections -fPIC -march=rv64gc -mabi=lp64d -mcmodel=medany"
 
-ENV CARGO_BUILD_TARGET=$RUST_TARGET\
+ENV CARGO_BUILD_TARGET=$RUST_TARGET \
     CARGO_TERM_COLOR=always
 
 WORKDIR /project

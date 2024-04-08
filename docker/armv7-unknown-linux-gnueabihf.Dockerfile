@@ -61,13 +61,13 @@ ENV CARGO_TARGET_ARMV7_UNKNOWN_LINUX_GNUEABIHF_LINKER="$CROSS_TOOLCHAIN_PREFIX"g
     BINDGEN_EXTRA_CLANG_ARGS_armv7_unknown_linux_gnueabihf="--sysroot=$CROSS_SYSROOT" \
     RUST_TEST_THREADS=1 \
     PKG_CONFIG_ALLOW_CROSS_armv7_unknown_linux_gnueabihf=true \
-    PKG_CONFIG_PATH="/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/:${PKG_CONFIG_PATH}" \
+    PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/:${PKG_CONFIG_PATH}" \
     CROSS_CMAKE_SYSTEM_NAME=Linux \
     CROSS_CMAKE_SYSTEM_PROCESSOR=arm \
     CROSS_CMAKE_CRT=gnu \
     CROSS_CMAKE_OBJECT_FLAGS="-ffunction-sections -fdata-sections -fPIC -march=armv7-a -mfpu=vfpv3-d16"
 
-ENV CARGO_BUILD_TARGET=$RUST_TARGET\
+ENV CARGO_BUILD_TARGET=$RUST_TARGET \
     CARGO_TERM_COLOR=always
 
 WORKDIR /project
