@@ -11,6 +11,29 @@ Built for x86_64 (amd64) and aarch64 (arm64) platforms.
 - From GitHub `docker pull ghcr.io/cargo-prebuilt/ink-cross:$DIST-$TARGET`
 - From Quay `docker pull quay.io/cargo-prebuilt/ink-cross:$DIST-$TARGET`
 
+## Using
+
+Debug Build:
+
+```shell
+docker run --rm \
+    --userns host --user $(id -u):$(id -g) \
+    -v $HOME/.cargo/registry:/usr/local/cargo/registry \
+    -v ./:/project \
+    ghcr.io/cargo-prebuilt/ink-cross:stable-$TARGET
+```
+
+Release Build:
+
+```shell
+docker run --rm \
+    --userns host --user $(id -u):$(id -g) \
+    -v $HOME/.cargo/registry:/usr/local/cargo/registry \
+    -v ./:/project \
+    ghcr.io/cargo-prebuilt/ink-cross:stable-$TARGET \
+    auditable build --verbose --release --locked
+```
+
 ## Dists
 
 There are 4 dists:
