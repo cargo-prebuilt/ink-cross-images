@@ -61,7 +61,7 @@ jobs:
           echo "BUILD_DATE=$(date --utc)" >> $GITHUB_ENV
           ./build-args.sh
       - name: Vars (Latest Rust Pinned)
-        if: ${{ matrix.nightly-only != '' }}
+        if: ${{ matrix.nightly-only == '' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: echo "LATEST_RUST_VERSION=$(gh release view -R rust-lang/rust --json tagName --jq '.tagName')" >> $GITHUB_ENV
@@ -71,7 +71,7 @@ jobs:
         run: echo "OPENSSL_VERSION=$(gh release view -R openssl/openssl --json tagName --jq '.tagName')" >> $GITHUB_ENV
 
       - name: Build and push Docker images (pinned)
-        if: ${{ matrix.nightly-only != '' }}
+        if: ${{ matrix.nightly-only == '' }}
         uses: docker/build-push-action@v5
         with:
           context: ./
@@ -103,7 +103,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
 
       - name: Build and push Docker images (stable)
-        if: ${{ matrix.nightly-only != '' }}
+        if: ${{ matrix.nightly-only == '' }}
         uses: docker/build-push-action@v5
         with:
           context: ./
@@ -136,7 +136,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
 
       - name: Build and push Docker images (beta)
-        if: ${{ matrix.nightly-only != '' }}
+        if: ${{ matrix.nightly-only == '' }}
         uses: docker/build-push-action@v5
         with:
           context: ./
