@@ -9,16 +9,21 @@ apt install -y --no-install-recommends \
     curl \
     lsb-release \
     pkg-config \
+    bison \
+    flex \
+    texinfo \
     autoconf \
     automake \
     make \
     libtool \
+    libtool-bin \
     git \
     perl \
     xz-utils \
+    meson \
     ninja-build
 
-if [ ! -z "$GCC_PKGS" ]; then
+if [ ! -z "${GCC_PKGS+x}" ]; then
     apt install -y --no-install-recommends $GCC_PKGS
 fi
 

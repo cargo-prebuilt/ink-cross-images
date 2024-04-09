@@ -1,13 +1,13 @@
 # syntax=docker/dockerfile:1
-FROM debian:stable-slim
+FROM debian:12-slim
 
 # Build CMDS
 ARG EXT_CURL_CMD="curl --retry 3 -fsSL"
 
 # Versioning
-ARG CMAKE_VERSION=3.27.7
-ARG OPENSSL_VERSION=openssl-3.1.3
-ARG LLVM_VERSION=17
+ARG CMAKE_VERSION=3.29.1
+ARG OPENSSL_VERSION=openssl-3.2.1
+ARG LLVM_VERSION=18
 ARG MUSL_VERSION=1.2.4
 
 # Do not set
@@ -72,13 +72,13 @@ ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER="$CROSS_TOOLCHAIN_PREFIX"clan
     BINDGEN_EXTRA_CLANG_ARGS_aarch64_unknown_linux_musl="--sysroot=$CROSS_SYSROOT" \
     RUST_TEST_THREADS=1 \
     PKG_CONFIG_ALLOW_CROSS_aarch64_unknown_linux_musl=true \
-    PKG_CONFIG_PATH="/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/:${PKG_CONFIG_PATH}" \
+    PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/:${PKG_CONFIG_PATH}" \
     CROSS_CMAKE_SYSTEM_NAME=Linux \
     CROSS_CMAKE_SYSTEM_PROCESSOR=aarch64 \
     CROSS_CMAKE_CRT=musl \
     CROSS_CMAKE_OBJECT_FLAGS="-ffunction-sections -fdata-sections -fPIC"
 
-ENV CARGO_BUILD_TARGET=$RUST_TARGET\
+ENV CARGO_BUILD_TARGET=$RUST_TARGET \
     CARGO_TERM_COLOR=always
 
 WORKDIR /project
