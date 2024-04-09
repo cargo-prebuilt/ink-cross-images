@@ -78,6 +78,7 @@ mkdir -p "$CROSS_SYSROOT"/usr/lib
 
 rm -rf ./openbsd/usr/lib/locate
 rm -rf ./openbsd/usr/lib/pkgconfig
+rm -f ./openbsd/usr/lib/libLLVM* # LLVM is really heavy and we probably do not need it?
 cp -r ./openbsd/usr/lib "$CROSS_SYSROOT"/usr
 
 rm -rf ./openbsd
@@ -85,12 +86,12 @@ $EXT_CURL_CMD "$OPENBSD_URL"comp"${OPENBSD_VERSION//.}".tgz -o comp.tgz
 mkdir -p ./openbsd
 tar -xzvf comp.tgz -C ./openbsd
 
+rm -rf ./openbsd/usr/include/llvm # LLVM is really heavy and we probably do not need it?
 cp -r ./openbsd/usr/include "$CROSS_SYSROOT"/usr
 
 rm -rf ./openbsd/usr/lib/clang
 rm -rf ./openbsd/usr/lib/debug
 rm -f ./openbsd/usr/lib/lib{crypto,ssl,tls}{,_p}.a
-
 cp ./openbsd/usr/lib/*.a "$CROSS_SYSROOT"/usr/lib
 
 popd

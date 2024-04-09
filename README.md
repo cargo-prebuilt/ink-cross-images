@@ -50,6 +50,7 @@ Info:
 - experimental - Has not been extensively tested.
 - bleeding - Has barely been tested.
 - nightly-only - Only builds and ships a nightly rust image.
+  (Also is probably a [tier 3 rust target](https://doc.rust-lang.org/nightly/rustc/platform-support.html))
 
 Targets:
 - aarch64-unknown-linux-gnu
