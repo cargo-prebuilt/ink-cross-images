@@ -46,47 +46,47 @@ update-alternatives --install /usr/bin/strip strip /usr/bin/llvm-strip-"$LLVM_VE
 update-alternatives --install /usr/bin/strings strings /usr/bin/llvm-strings-"$LLVM_VERSION" 100
 
 # Setup clang cross compile
-mkdir -p "$CROSS_SYSROOT"/bin
+mkdir -p "$CROSS_SYSROOT"/usr/bin
 
-echo '#!/bin/sh' >"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"clang
-echo "exec /usr/bin/clang-$LLVM_VERSION --target=$LLVM_TARGET --sysroot=$CROSS_SYSROOT \"\$@\"" >>"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"clang
-chmod +x "$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"clang
+echo '#!/bin/sh' > "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"clang
+echo "exec /usr/bin/clang-$LLVM_VERSION --target=$LLVM_TARGET --sysroot=$CROSS_SYSROOT \"\$@\"" >> "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"clang
+chmod +x "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"clang
 
-echo '#!/bin/sh' >"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"clang++
-echo "exec /usr/bin/clang++-$LLVM_VERSION --target=$LLVM_TARGET --sysroot=$CROSS_SYSROOT -stdlib=libc++ \"\$@\"" >>"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"clang++
-chmod +x "$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"clang++
+echo '#!/bin/sh' > "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"clang++
+echo "exec /usr/bin/clang++-$LLVM_VERSION --target=$LLVM_TARGET --sysroot=$CROSS_SYSROOT -stdlib=libc++ \"\$@\"" >> "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"clang++
+chmod +x "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"clang++
 
-echo '#!/bin/sh' >"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"ar
-echo "exec /usr/bin/llvm-ar-$LLVM_VERSION \"\$@\"" >>"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"ar
-chmod +x "$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"ar
+echo '#!/bin/sh' > "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"ar
+echo "exec /usr/bin/llvm-ar-$LLVM_VERSION \"\$@\"" >> "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"ar
+chmod +x "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"ar
 
-echo '#!/bin/sh' >"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"as
-echo "exec /usr/bin/llvm-as-$LLVM_VERSION \"\$@\"" >>"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"as
-chmod +x "$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"as
+echo '#!/bin/sh' > "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"as
+echo "exec /usr/bin/llvm-as-$LLVM_VERSION \"\$@\"" >> "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"as
+chmod +x "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"as
 
-echo '#!/bin/sh' >"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"ld
-echo "exec /usr/bin/lld-$LLVM_VERSION \"\$@\"" >>"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"ld
-chmod +x "$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"ld
+echo '#!/bin/sh' > "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"ld
+echo "exec /usr/bin/lld-$LLVM_VERSION \"\$@\"" >> "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"ld
+chmod +x "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"ld
 
-echo '#!/bin/sh' >"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"nm
-echo "exec /usr/bin/llvm-nm-$LLVM_VERSION \"\$@\"" >>"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"nm
-chmod +x "$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"nm
+echo '#!/bin/sh' > "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"nm
+echo "exec /usr/bin/llvm-nm-$LLVM_VERSION \"\$@\"" >> "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"nm
+chmod +x "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"nm
 
-echo '#!/bin/sh' >"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"objcopy
-echo "exec /usr/bin/llvm-objcopy-$LLVM_VERSION \"\$@\"" >>"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"objcopy
-chmod +x "$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"objcopy
+echo '#!/bin/sh' > "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"objcopy
+echo "exec /usr/bin/llvm-objcopy-$LLVM_VERSION \"\$@\"" >> "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"objcopy
+chmod +x "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"objcopy
 
-echo '#!/bin/sh' >"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"objdump
-echo "exec /usr/bin/llvm-objdump-$LLVM_VERSION \"\$@\"" >>"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"objdump
-chmod +x "$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"objdump
+echo '#!/bin/sh' > "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"objdump
+echo "exec /usr/bin/llvm-objdump-$LLVM_VERSION \"\$@\"" >> "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"objdump
+chmod +x "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"objdump
 
-echo '#!/bin/sh' >"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"ranlib
-echo "exec /usr/bin/llvm-ranlib-$LLVM_VERSION \"\$@\"" >>"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"ranlib
-chmod +x "$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"ranlib
+echo '#!/bin/sh' > "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"ranlib
+echo "exec /usr/bin/llvm-ranlib-$LLVM_VERSION \"\$@\"" >> "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"ranlib
+chmod +x "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"ranlib
 
-echo '#!/bin/sh' >"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"strip
-echo "exec /usr/bin/llvm-strip-$LLVM_VERSION \"\$@\"" >>"$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"strip
-chmod +x "$CROSS_SYSROOT"/bin/"$CROSS_TOOLCHAIN_PREFIX"strip
+echo '#!/bin/sh' > "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"strip
+echo "exec /usr/bin/llvm-strip-$LLVM_VERSION \"\$@\"" >> "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"strip
+chmod +x "$CROSS_SYSROOT"/usr/bin/"$CROSS_TOOLCHAIN_PREFIX"strip
 
 "$CROSS_TOOLCHAIN_PREFIX"clang --version
 "$CROSS_TOOLCHAIN_PREFIX"clang++ --version
