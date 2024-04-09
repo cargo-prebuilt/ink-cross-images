@@ -9,7 +9,7 @@ git clone --depth=1 -b "$OPENSSL_VERSION" https://github.com/openssl/openssl.git
 cd ./openssl
 
 AR="$CROSS_TOOLCHAIN_PREFIX"ar CC="$CROSS_TOOLCHAIN_PREFIX"clang ./Configure $OPENSSL_COMBO \
-    --libdir=lib --prefix="$CROSS_SYSROOT" --openssldir="/usr/local/$CROSS_TOOLCHAIN/ssl" \
+    --libdir=lib --prefix="$CROSS_SYSROOT"/usr --openssldir="/usr/local/$CROSS_TOOLCHAIN/ssl" \
     no-dso no-shared no-ssl3 no-tests no-comp \
     no-legacy no-camellia no-idea no-seed \
     no-engine no-async -DOPENSSL_NO_SECURE_MEMORY # Musl options

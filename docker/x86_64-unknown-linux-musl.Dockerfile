@@ -38,14 +38,14 @@ RUN --mount=type=bind,source=./scripts/install-cmake.sh,target=/run.sh /run.sh
 COPY ./cmake/toolchain-clang.cmake /opt/toolchain.cmake
 
 # Install clang
-ENV PATH=$PATH:$CROSS_SYSROOT/bin
+ENV PATH=$PATH:$CROSS_SYSROOT/usr/bin
 RUN --mount=type=bind,source=./scripts/install-clang.sh,target=/run.sh /run.sh
 
 # Install musl
 RUN --mount=type=bind,source=./scripts/install-musl.sh,target=/run.sh /run.sh
 
 # Openssl
-ENV OPENSSL_DIR=$CROSS_SYSROOT
+ENV OPENSSL_DIR=$CROSS_SYSROOT/usr
 RUN --mount=type=bind,source=./scripts/install-openssl-musl.sh,target=/run.sh /run.sh
 
 # Cargo prebuilt
@@ -72,7 +72,7 @@ ENV CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER="$CROSS_TOOLCHAIN_PREFIX"clang
     BINDGEN_EXTRA_CLANG_ARGS_x86_64_unknown_linux_musl="--sysroot=$CROSS_SYSROOT" \
     RUST_TEST_THREADS=1 \
     PKG_CONFIG_ALLOW_CROSS_x86_64_unknown_linux_musl=true \
-    PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/:${PKG_CONFIG_PATH}" \
+    PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/usr/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/:${PKG_CONFIG_PATH}" \
     CROSS_CMAKE_SYSTEM_NAME=Linux \
     CROSS_CMAKE_SYSTEM_PROCESSOR=x86_64 \
     CROSS_CMAKE_CRT=musl \
