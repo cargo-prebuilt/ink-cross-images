@@ -46,6 +46,12 @@ There are 4 dists:
 
 Only rust targets that have host tools can be built.
 
+Info:
+- experimental - Has not been extensively tested.
+- bleeding - Has barely been tested.
+- nightly-only - Only builds and ships a nightly rust image.
+
+Targets:
 - aarch64-unknown-linux-gnu
 - aarch64-unknown-linux-musl (experimental)
 - armv7-unknown-linux-gnueabihf
@@ -56,6 +62,7 @@ Only rust targets that have host tools can be built.
 - x86_64-unknown-freebsd (experimental)
 - x86_64-unknown-linux-gnu
 - x86_64-unknown-linux-musl (experimental)
+- x86_64-unknown-openbsd (bleeding, nightly-only)
 
 ## Differences between images
 

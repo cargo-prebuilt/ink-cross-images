@@ -65,7 +65,7 @@ latest_freebsd() {
 mkdir -p /tmp/freebsd
 pushd /tmp/freebsd
 
-FREEBSD_VERSION="$(latest_freebsd 'https://download.freebsd.org/ftp/releases/')"
+FREEBSD_VERSION="$(latest_freebsd 'https://download.freebsd.org/ftp/releases')"
 FREEBSD_URL="https://download.freebsd.org/ftp/releases/$FREEBSD_ARCH/$FREEBSD_VERSION-RELEASE/"
 
 $EXT_CURL_CMD "$FREEBSD_URL"base.txz -o base.txz
@@ -87,8 +87,7 @@ cp ./freebsd/usr/lib/{libcompiler_rt,libgcc}.a "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/lib{c,util,m,ssp_nonshared,memstat}.a "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/lib{rt,execinfo,procstat}.so.1 "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/libmemstat.so.3 "$CROSS_SYSROOT"/usr/lib
-cp ./freebsd/usr/lib/crt*.o "$CROSS_SYSROOT"/usr/lib
-cp ./freebsd/usr/lib/Scrt*.o "$CROSS_SYSROOT"/usr/lib
+cp ./freebsd/usr/lib/*crt*.o "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/libkvm.a "$CROSS_SYSROOT"/usr/lib
 
 for lib in "$CROSS_SYSROOT"/usr/lib/*.so.*; do
