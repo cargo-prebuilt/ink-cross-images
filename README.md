@@ -53,8 +53,10 @@ Info:
   (Also is probably a [tier 3 rust target](https://doc.rust-lang.org/nightly/rustc/platform-support.html))
 
 Targets:
+- aarch64-unknown-freebsd (bleeding, nightly-only)
 - aarch64-unknown-linux-gnu
 - aarch64-unknown-linux-musl (experimental)
+- aarch64-unknown-openbsd (bleeding, nightly-only)
 - armv7-unknown-linux-gnueabihf
 - armv7-unknown-linux-musleabihf (experimental)
 - powerpc64le-unknown-linux-gnu
