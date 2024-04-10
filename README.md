@@ -44,17 +44,35 @@ There are 4 dists:
 
 ## Targets
 
+Only rust targets that have host tools can be built.
+
+Info:
+- experimental - Has not been extensively tested.
+- bleeding - Has barely been tested.
+- nightly-only - Only builds and ships a nightly rust image.
+  (Also is probably a [tier 3 rust target](https://doc.rust-lang.org/nightly/rustc/platform-support.html))
+
+Targets:
+- aarch64-unknown-freebsd (bleeding, nightly-only)
 - aarch64-unknown-linux-gnu
-- aarch64-unknown-linux-musl
+- aarch64-unknown-linux-musl (experimental)
 - armv7-unknown-linux-gnueabihf
-- armv7-unknown-linux-musleabihf
+- armv7-unknown-linux-musleabihf (experimental)
 - powerpc64le-unknown-linux-gnu
 - riscv64gc-unknown-linux-gnu
 - s390x-unknown-linux-gnu
+- x86_64-unknown-freebsd (experimental)
 - x86_64-unknown-linux-gnu
-- x86_64-unknown-linux-musl
+- x86_64-unknown-linux-musl (experimental)
+- x86_64-unknown-openbsd (bleeding, nightly-only)
 
 ## Differences between images
 
-- Gnu images use gcc
-- Musl images use clang
+- GNU images use gcc.
+  All other images use clang.
+- GNU images are /usr/$CROSS_TOOLCHAIN/{include,lib}.
+  All others are /usr/$CROSS_TOOLCHAIN/usr/{include,lib}.
+
+## Acknowledgments
+
+- [cross-rs](https://github.com/cross-rs/cross)

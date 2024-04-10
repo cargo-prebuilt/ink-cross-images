@@ -19,16 +19,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target:
-          - aarch64-unknown-linux-gnu
-          - aarch64-unknown-linux-musl
-          - armv7-unknown-linux-gnueabihf
-          - armv7-unknown-linux-musleabihf
-          - powerpc64le-unknown-linux-gnu
-          - riscv64gc-unknown-linux-gnu
-          - s390x-unknown-linux-gnu
-          - x86_64-unknown-linux-gnu
-          - x86_64-unknown-linux-musl
+        include:
+          - target: aarch64-unknown-freebsd
+            nightly-only: true
+          - target: aarch64-unknown-linux-gnu
+          - target: aarch64-unknown-linux-musl
+          - target: armv7-unknown-linux-gnueabihf
+          - target: armv7-unknown-linux-musleabihf
+          - target: powerpc64le-unknown-linux-gnu
+          - target: riscv64gc-unknown-linux-gnu
+          - target: s390x-unknown-linux-gnu
+          - target: x86_64-unknown-freebsd
+          - target: x86_64-unknown-linux-gnu
+          - target: x86_64-unknown-linux-musl
+          - target: x86_64-unknown-openbsd
+            nightly-only: true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -58,6 +63,7 @@ jobs:
           echo "BUILD_DATE=$(date --utc)" >> $GITHUB_ENV
           ./build-args.sh
       - name: Vars (Latest Rust Pinned)
+        if: ${{ matrix.nightly-only == '' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: echo "LATEST_RUST_VERSION=$(gh release view -R rust-lang/rust --json tagName --jq '.tagName')" >> $GITHUB_ENV
@@ -67,6 +73,7 @@ jobs:
         run: echo "OPENSSL_VERSION=$(gh release view -R openssl/openssl --json tagName --jq '.tagName')" >> $GITHUB_ENV
 
       - name: Build and push Docker images (pinned)
+        if: ${{ matrix.nightly-only == '' }}
         uses: docker/build-push-action@v5
         with:
           context: ./
@@ -82,6 +89,8 @@ jobs:
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             LLVM_VERSION=${{ env.LLVM_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
+            FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
+            OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
           labels: |
             tech.harmless.ink-cross.target="${{ matrix.target }}"
             tech.harmless.ink-cross.pull_request_build="${{ github.event_name == 'pull_request' }}"
@@ -98,6 +107,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
 
       - name: Build and push Docker images (stable)
+        if: ${{ matrix.nightly-only == '' }}
         uses: docker/build-push-action@v5
         with:
           context: ./
@@ -113,6 +123,8 @@ jobs:
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             LLVM_VERSION=${{ env.LLVM_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
+            FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
+            OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
           labels: |
             tech.harmless.ink-cross.target="${{ matrix.target }}"
             tech.harmless.ink-cross.pull_request_build="${{ github.event_name == 'pull_request' }}"
@@ -130,6 +142,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
 
       - name: Build and push Docker images (beta)
+        if: ${{ matrix.nightly-only == '' }}
         uses: docker/build-push-action@v5
         with:
           context: ./
@@ -145,6 +158,8 @@ jobs:
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             LLVM_VERSION=${{ env.LLVM_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
+            FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
+            OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
           labels: |
             tech.harmless.ink-cross.target="${{ matrix.target }}"
             tech.harmless.ink-cross.pull_request_build="${{ github.event_name == 'pull_request' }}"
@@ -177,6 +192,8 @@ jobs:
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             LLVM_VERSION=${{ env.LLVM_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
+            FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
+            OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
           labels: |
             tech.harmless.ink-cross.target="${{ matrix.target }}"
             tech.harmless.ink-cross.pull_request_build="${{ github.event_name == 'pull_request' }}"
