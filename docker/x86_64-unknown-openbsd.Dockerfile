@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
-FROM debian:12-slim
+ARG DEBIAN_VERSION=12-slim
+FROM debian:$DEBIAN_VERSION
 
 ################################
 # This target is nightly ONLY! #
