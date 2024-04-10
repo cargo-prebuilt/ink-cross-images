@@ -4,7 +4,7 @@ set -euxo pipefail
 
 ### https://github.com/cross-rs/cross/blob/main/docker/freebsd.sh
 max_openbsd() {
-    local best=
+    local best="$OPENBSD_MAJOR.0"
     local minor=0
     local version=
     local release_major=

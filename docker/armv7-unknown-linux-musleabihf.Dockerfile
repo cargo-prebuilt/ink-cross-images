@@ -1,5 +1,18 @@
 # syntax=docker/dockerfile:1
-FROM debian:12-slim
+ARG DEBIAN_VERSION=12-slim
+ARG ALPINE_VERSION=edge
+FROM alpine:$ALPINE_VERSION as rooter
+
+ARG CROSS_TOOLCHAIN=arm-linux-musleabihf
+ARG APK_ARCH=armv7
+
+# Script requires bash
+RUN apk --no-cache add bash
+
+# Setup sysroot
+RUN --mount=type=bind,source=./scripts/extract-alpine-sysroot.sh,target=/run.sh /run.sh
+
+FROM debian:$DEBIAN_VERSION
 
 # Build CMDS
 ARG EXT_CURL_CMD="curl --retry 3 -fsSL"
@@ -8,7 +21,6 @@ ARG EXT_CURL_CMD="curl --retry 3 -fsSL"
 ARG CMAKE_VERSION=3.29.1
 ARG OPENSSL_VERSION=openssl-3.2.1
 ARG LLVM_VERSION=18
-ARG MUSL_VERSION=1.2.4
 
 # Do not set
 ARG DEBIAN_FRONTEND=noninteractive
@@ -21,8 +33,6 @@ ARG CROSS_TOOLCHAIN_PREFIX="$CROSS_TOOLCHAIN"-
 ARG CROSS_SYSROOT=/usr/"$CROSS_TOOLCHAIN"
 
 ARG OPENSSL_COMBO=linux-armv4
-
-ARG GCC_PKGS="libgcc-12-dev-armhf-cross"
 
 ARG LLVM_TARGET=$RUST_TARGET
 
@@ -41,12 +51,13 @@ COPY ./cmake/toolchain-clang.cmake /opt/toolchain.cmake
 ENV PATH=$PATH:$CROSS_SYSROOT/usr/bin
 RUN --mount=type=bind,source=./scripts/install-clang.sh,target=/run.sh /run.sh
 
-# Install musl
-RUN --mount=type=bind,source=./scripts/install-musl.sh,target=/run.sh /run.sh
+# Install sysroot (musl + libstdc++ + libgcc)
+COPY --from=rooter /opt/export/ $CROSS_SYSROOT/usr
+RUN --mount=type=bind,source=./scripts/setup-clang.sh,target=/run.sh /run.sh
 
 # Openssl
 ENV OPENSSL_DIR=$CROSS_SYSROOT/usr
-RUN --mount=type=bind,source=./scripts/install-openssl-musl.sh,target=/run.sh /run.sh
+RUN --mount=type=bind,source=./scripts/install-openssl-clang.sh,target=/run.sh /run.sh
 
 # Cargo prebuilt
 RUN --mount=type=bind,source=./scripts/install-cargo-prebuilt.sh,target=/run.sh /run.sh
