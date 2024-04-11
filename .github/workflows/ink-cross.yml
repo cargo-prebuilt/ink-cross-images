@@ -21,18 +21,32 @@ jobs:
       matrix:
         include:
           - target: aarch64-unknown-freebsd
+            platforms: ${{ env.platforms }}
             nightly-only: true
           - target: aarch64-unknown-linux-gnu
+            platforms: ${{ env.platforms }}
           - target: aarch64-unknown-linux-musl
+            platforms: ${{ env.platforms }}
           - target: armv7-unknown-linux-gnueabihf
+            platforms: ${{ env.platforms }}
           - target: armv7-unknown-linux-musleabihf
+            platforms: ${{ env.platforms }}
+          - target: powerpc64-unknown-linux-gnu
+            platforms: linux/amd64
           - target: powerpc64le-unknown-linux-gnu
+            platforms: ${{ env.platforms }}
           - target: riscv64gc-unknown-linux-gnu
+            platforms: ${{ env.platforms }}
           - target: s390x-unknown-linux-gnu
+            platforms: ${{ env.platforms }}
           - target: x86_64-unknown-freebsd
+            platforms: ${{ env.platforms }}
           - target: x86_64-unknown-linux-gnu
+            platforms: ${{ env.platforms }}
           - target: x86_64-unknown-linux-musl
+            platforms: ${{ env.platforms }}
           - target: x86_64-unknown-openbsd
+            platforms: ${{ env.platforms }}
             nightly-only: true
     runs-on: ubuntu-latest
     steps:
@@ -103,7 +117,7 @@ jobs:
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
             tech.harmless.ink-cross.version.musl="${{ env.MUSL_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
-          platforms: ${{ env.platforms }}
+          platforms: ${{ matrix.platforms }}
           builder: ${{ steps.buildx.outputs.name }}
 
       - name: Build and push Docker images (stable)
@@ -138,7 +152,7 @@ jobs:
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
             tech.harmless.ink-cross.version.musl="${{ env.MUSL_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
-          platforms: ${{ env.platforms }}
+          platforms: ${{ matrix.platforms }}
           builder: ${{ steps.buildx.outputs.name }}
 
       - name: Build and push Docker images (beta)
@@ -173,7 +187,7 @@ jobs:
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
             tech.harmless.ink-cross.version.musl="${{ env.MUSL_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
-          platforms: ${{ env.platforms }}
+          platforms: ${{ matrix.platforms }}
           builder: ${{ steps.buildx.outputs.name }}
 
       - name: Build and push Docker images (nightly)
@@ -207,5 +221,5 @@ jobs:
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
             tech.harmless.ink-cross.version.musl="${{ env.MUSL_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
-          platforms: ${{ env.platforms }}
+          platforms: ${{ matrix.platforms }}
           builder: ${{ steps.buildx.outputs.name }}
