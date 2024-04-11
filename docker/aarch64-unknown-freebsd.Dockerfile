@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
-FROM debian:12-slim
+ARG DEBIAN_VERSION=12-slim
+FROM debian:$DEBIAN_VERSION
 
 ################################
 # This target is nightly ONLY! #
@@ -43,9 +44,10 @@ COPY ./cmake/toolchain-clang.cmake /opt/toolchain.cmake
 # Install clang
 ENV PATH=$PATH:$CROSS_SYSROOT/usr/bin
 RUN --mount=type=bind,source=./scripts/install-clang.sh,target=/run.sh /run.sh
+RUN --mount=type=bind,source=./scripts/setup-clang.sh,target=/run.sh /run.sh
 
 # Install freebsd
-RUN --mount=type=bind,source=./scripts/install-freebsd-sysroot.sh,target=/run.sh /run.sh
+RUN --mount=type=bind,source=./scripts/extract-freebsd-sysroot.sh,target=/run.sh /run.sh
 
 # Openssl
 ENV OPENSSL_DIR=$CROSS_SYSROOT/usr

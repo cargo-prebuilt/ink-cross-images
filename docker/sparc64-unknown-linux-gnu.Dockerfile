@@ -13,15 +13,15 @@ ARG OPENSSL_VERSION=openssl-3.2.1
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TARGETARCH
 
-ARG RUST_TARGET=armv7-unknown-linux-gnueabihf
+ARG RUST_TARGET=sparc64-unknown-linux-gnu
 
-ARG CROSS_TOOLCHAIN=arm-linux-gnueabihf
+ARG CROSS_TOOLCHAIN=sparc64-linux-gnu
 ARG CROSS_TOOLCHAIN_PREFIX="$CROSS_TOOLCHAIN"-
 ARG CROSS_SYSROOT=/usr/"$CROSS_TOOLCHAIN"
 
-ARG OPENSSL_COMBO=linux-armv4
+ARG OPENSSL_COMBO=linux-generic64
 
-ARG GCC_PKGS="g++-arm-linux-gnueabihf libc6-dev-armhf-cross"
+ARG GCC_PKGS="g++-sparc64-linux-gnu libc6-dev-sparc64-cross"
 
 ENV RUSTUP_HOME=/usr/local/rustup
 ENV CARGO_HOME=/usr/local/cargo
@@ -54,19 +54,19 @@ RUN --mount=type=bind,source=./scripts/entrypoint.sh,target=/run.sh /run.sh
 
 ENV CROSS_TOOLCHAIN_PREFIX=$CROSS_TOOLCHAIN_PREFIX
 ENV CROSS_SYSROOT=$CROSS_SYSROOT
-ENV CARGO_TARGET_ARMV7_UNKNOWN_LINUX_GNUEABIHF_LINKER="$CROSS_TOOLCHAIN_PREFIX"gcc \
-    AR_armv7_unknown_linux_gnueabihf="$CROSS_TOOLCHAIN_PREFIX"ar \
-    CC_armv7_unknown_linux_gnueabihf="$CROSS_TOOLCHAIN_PREFIX"gcc \
-    CXX_armv7_unknown_linux_gnueabihf="$CROSS_TOOLCHAIN_PREFIX"g++ \
-    CMAKE_TOOLCHAIN_FILE_armv7_unknown_linux_gnueabihf=/opt/toolchain.cmake \
-    BINDGEN_EXTRA_CLANG_ARGS_armv7_unknown_linux_gnueabihf="--sysroot=$CROSS_SYSROOT" \
+ENV CARGO_TARGET_SPARC64_UNKNOWN_LINUX_GNU_LINKER="$CROSS_TOOLCHAIN_PREFIX"gcc \
+    AR_sparc64_unknown_linux_gnu="$CROSS_TOOLCHAIN_PREFIX"ar \
+    CC_sparc64_unknown_linux_gnu="$CROSS_TOOLCHAIN_PREFIX"gcc \
+    CXX_sparc64_unknown_linux_gnu="$CROSS_TOOLCHAIN_PREFIX"g++ \
+    CMAKE_TOOLCHAIN_FILE_sparc64_unknown_linux_gnu=/opt/toolchain.cmake \
+    BINDGEN_EXTRA_CLANG_ARGS_sparc64_unknown_linux_gnu="--sysroot=$CROSS_SYSROOT" \
     RUST_TEST_THREADS=1 \
-    PKG_CONFIG_ALLOW_CROSS_armv7_unknown_linux_gnueabihf=true \
+    PKG_CONFIG_ALLOW_CROSS_sparc64_unknown_linux_gnu=true \
     PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/:${PKG_CONFIG_PATH}" \
     CROSS_CMAKE_SYSTEM_NAME=Linux \
-    CROSS_CMAKE_SYSTEM_PROCESSOR=arm \
+    CROSS_CMAKE_SYSTEM_PROCESSOR=sparc64 \
     CROSS_CMAKE_CRT=gnu \
-    CROSS_CMAKE_OBJECT_FLAGS="-ffunction-sections -fdata-sections -fPIC -march=armv7-a -mfpu=vfpv3-d16"
+    CROSS_CMAKE_OBJECT_FLAGS="-ffunction-sections -fdata-sections -fPIC"
 
 ENV CARGO_BUILD_TARGET=$RUST_TARGET \
     CARGO_TERM_COLOR=always

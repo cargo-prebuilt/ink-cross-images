@@ -4,7 +4,7 @@ set -euxo pipefail
 
 ### https://github.com/cross-rs/cross/blob/main/docker/freebsd.sh
 max_freebsd() {
-    local best=
+    local best="$FREEBSD_MAJOR.0"
     local minor=0
     local version=
     local release_major=
@@ -89,6 +89,13 @@ cp ./freebsd/usr/lib/lib{rt,execinfo,procstat}.so.1 "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/libmemstat.so.3 "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/*crt*.o "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/libkvm.a "$CROSS_SYSROOT"/usr/lib
+
+#rm -f ./freebsd/usr/lib/*_p.*
+#cp ./freebsd/usr/lib/*.a "$CROSS_SYSROOT"/usr/lib
+#cp ./freebsd/usr/lib/*.so.* "$CROSS_SYSROOT"/usr/lib
+#cp ./freebsd/usr/lib/*crt*.o "$CROSS_SYSROOT"/usr/lib
+
+echo "GROUP ( /usr/lib/libc++.so.1 /usr/lib/libcxxrt.so )" > "$CROSS_SYSROOT"/usr/lib/libc++.so
 
 for lib in "$CROSS_SYSROOT"/usr/lib/*.so.*; do
     LINK="$(basename "$lib")"

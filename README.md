@@ -49,6 +49,7 @@ Only rust targets that have host tools can be built.
 Info:
 - experimental - Has not been extensively tested.
 - bleeding - Has barely been tested.
+- amd64 - Only available on amd64 platforms.
 - nightly-only - Only builds and ships a nightly rust image.
   (Also is probably a [tier 3 rust target](https://doc.rust-lang.org/nightly/rustc/platform-support.html))
 
@@ -58,12 +59,15 @@ Targets:
 - aarch64-unknown-linux-musl (experimental)
 - armv7-unknown-linux-gnueabihf
 - armv7-unknown-linux-musleabihf (experimental)
+- powerpc64-unknown-linux-gnu (bleeding, amd64)
 - powerpc64le-unknown-linux-gnu
 - riscv64gc-unknown-linux-gnu
 - s390x-unknown-linux-gnu
+- sparc64-unknown-linux-gnu (bleeding, amd64)
 - x86_64-unknown-freebsd (experimental)
 - x86_64-unknown-linux-gnu
 - x86_64-unknown-linux-musl (experimental)
+- x86_64-unknown-netbsd (bleeding)
 - x86_64-unknown-openbsd (bleeding, nightly-only)
 
 ## Differences between images
