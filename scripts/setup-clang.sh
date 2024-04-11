@@ -28,7 +28,7 @@ case "$CROSS_TOOLCHAIN" in
     *-musl*)
         EXTRA="--gcc-install-dir=$(realpath /usr/$CROSS_TOOLCHAIN/usr/lib/gcc/$CROSS_TOOLCHAIN/*/)"
         ;;
-    *bsd*)
+    *-freebsd*|*-openbsd*)
         EXTRAPLUS="-stdlib=libc++"
         ;;
 esac
