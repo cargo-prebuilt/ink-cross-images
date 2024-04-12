@@ -15,7 +15,7 @@ add-apt-repository -y "deb http://apt.llvm.org/$VERSION_CODENAME/ llvm-toolchain
 add-apt-repository -y "deb http://apt.llvm.org/$VERSION_CODENAME/ llvm-toolchain-$VERSION_CODENAME-$LLVM_VERSION main"
 
 apt update
-apt install -y "clang-$LLVM_VERSION" "lld-$LLVM_VERSION" "llvm-$LLVM_VERSION"
+apt install -y --no-install-recommends "clang-$LLVM_VERSION" "lld-$LLVM_VERSION" "llvm-$LLVM_VERSION"
 
 apt purge -y software-properties-common gnupg
 apt autoremove -y
