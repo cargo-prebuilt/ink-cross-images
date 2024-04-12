@@ -56,7 +56,7 @@ Info:
 Targets:
 - aarch64-unknown-freebsd (bleeding, nightly-only)
 - aarch64-unknown-linux-gnu
-- aarch64-unknown-linux-musl (experimental)
+- aarch64-unknown-linux-musl
 - armv7-unknown-linux-gnueabihf
 - armv7-unknown-linux-musleabihf (experimental)
 - powerpc64-unknown-linux-gnu (bleeding, amd64)
@@ -66,7 +66,7 @@ Targets:
 - sparc64-unknown-linux-gnu (bleeding, amd64)
 - x86_64-unknown-freebsd (experimental)
 - x86_64-unknown-linux-gnu
-- x86_64-unknown-linux-musl (experimental)
+- x86_64-unknown-linux-musl
 - x86_64-unknown-netbsd (bleeding)
 - x86_64-unknown-openbsd (bleeding, nightly-only)
 

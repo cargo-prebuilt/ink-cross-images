@@ -20,5 +20,8 @@ $EXT_CURL_CMD "https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSIO
 $EXT_CURL_CMD "https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-SHA-256.txt" | sha256sum -c --ignore-missing -
 sh "cmake-$CMAKE_VERSION-linux-$CMAKE_ARCH.sh" --skip-license --prefix=/usr/local
 
+rm -rf /usr/local/doc
+rm -rf /usr/local/man
+
 popd
 rm -rf /tmp/cmake
