@@ -7,7 +7,7 @@ ARG EXT_CURL_CMD="curl --retry 3 -fsSL"
 
 # Versioning
 ARG CMAKE_VERSION=3.29.1
-ARG OPENSSL_VERSION=openssl-3.2.1
+ARG OPENSSL_VERSION=openssl-3.3.0
 
 # Do not set
 ARG DEBIAN_FRONTEND=noninteractive
