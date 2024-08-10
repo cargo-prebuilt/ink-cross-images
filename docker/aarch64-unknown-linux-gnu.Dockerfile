@@ -3,7 +3,7 @@ ARG DEBIAN_VERSION=12-slim
 FROM debian:$DEBIAN_VERSION
 
 # Build CMDS
-ARG EXT_CURL_CMD="curl --retry 3 -fsSL"
+ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 
 # Versioning
 ARG CMAKE_VERSION=3.30.2

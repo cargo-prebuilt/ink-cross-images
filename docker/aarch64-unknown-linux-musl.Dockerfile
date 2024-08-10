@@ -15,7 +15,7 @@ RUN --mount=type=bind,source=./scripts/extract-alpine-sysroot.sh,target=/run.sh 
 FROM debian:$DEBIAN_VERSION
 
 # Build CMDS
-ARG EXT_CURL_CMD="curl --retry 3 -fsSL"
+ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 
 # Versioning
 ARG CMAKE_VERSION=3.30.2
