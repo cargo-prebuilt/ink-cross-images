@@ -11,6 +11,9 @@ on:
   schedule:
     - cron: '0 6 * * 6'
 
+permissions:
+  contents: write
+
 jobs:
   ink-cross:
     strategy:
@@ -105,7 +108,7 @@ jobs:
             LLVM_VERSION=${{ env.LLVM_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
-            NETBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
+            NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
             OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
           labels: |
             tech.harmless.ink-cross.target="${{ matrix.target }}"
@@ -139,7 +142,7 @@ jobs:
             LLVM_VERSION=${{ env.LLVM_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
-            NETBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
+            NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
             OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
           labels: |
             tech.harmless.ink-cross.target="${{ matrix.target }}"
@@ -174,7 +177,7 @@ jobs:
             LLVM_VERSION=${{ env.LLVM_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
-            NETBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
+            NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
             OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
           labels: |
             tech.harmless.ink-cross.target="${{ matrix.target }}"
@@ -208,7 +211,7 @@ jobs:
             LLVM_VERSION=${{ env.LLVM_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
-            NETBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
+            NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
             OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
           labels: |
             tech.harmless.ink-cross.target="${{ matrix.target }}"
