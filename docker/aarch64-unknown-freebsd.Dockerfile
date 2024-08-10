@@ -77,7 +77,7 @@ ENV CARGO_TARGET_AARCH64_UNKNOWN_FREEBSD_LINKER="$CROSS_TOOLCHAIN_PREFIX"clang \
     BINDGEN_EXTRA_CLANG_ARGS_aarch64_unknown_freebsd="--sysroot=$CROSS_SYSROOT" \
     RUST_TEST_THREADS=1 \
     PKG_CONFIG_ALLOW_CROSS_aarch64_unknown_freebsd=true \
-    PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/usr/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/:${PKG_CONFIG_PATH}" \
+    PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/usr/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/" \
     PKG_CONFIG_ALLOW_CROSS=1 \
     CROSS_CMAKE_SYSTEM_NAME=FreeBSD \
     CROSS_CMAKE_SYSTEM_PROCESSOR=arm64 \
