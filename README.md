@@ -58,13 +58,13 @@ Targets:
 - aarch64-unknown-linux-gnu
 - aarch64-unknown-linux-musl
 - armv7-unknown-linux-gnueabihf
-- armv7-unknown-linux-musleabihf (experimental)
+- armv7-unknown-linux-musleabihf
 - powerpc64-unknown-linux-gnu (bleeding, amd64)
 - powerpc64le-unknown-linux-gnu
 - riscv64gc-unknown-linux-gnu
 - s390x-unknown-linux-gnu
 - sparc64-unknown-linux-gnu (bleeding, amd64)
-- x86_64-unknown-freebsd (experimental)
+- x86_64-unknown-freebsd
 - x86_64-unknown-linux-gnu
 - x86_64-unknown-linux-musl
 - x86_64-unknown-netbsd (bleeding)

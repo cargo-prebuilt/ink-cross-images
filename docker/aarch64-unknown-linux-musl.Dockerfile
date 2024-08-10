@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG DEBIAN_VERSION=12-slim
-ARG ALPINE_VERSION=edge
-FROM alpine:$ALPINE_VERSION as rooter
+ARG ALPINE_VERSION=3
+FROM alpine:$ALPINE_VERSION AS rooter
 
 ARG CROSS_TOOLCHAIN=aarch64-linux-musl
 ARG APK_ARCH=aarch64
