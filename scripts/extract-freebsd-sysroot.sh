@@ -70,7 +70,7 @@ FREEBSD_URL="https://download.freebsd.org/ftp/releases/$FREEBSD_ARCH/$FREEBSD_VE
 
 $EXT_CURL_CMD "$FREEBSD_URL"base.txz -o base.txz
 mkdir -p ./freebsd
-tar -xJvf base.txz -C ./freebsd
+tar -xJf base.txz -C ./freebsd
 
 mkdir -p "$CROSS_SYSROOT"/usr
 mkdir -p "$CROSS_SYSROOT"/usr/include

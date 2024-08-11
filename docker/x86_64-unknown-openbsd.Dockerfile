@@ -7,11 +7,11 @@ FROM debian:$DEBIAN_VERSION
 ################################
 
 # Build CMDS
-ARG EXT_CURL_CMD="curl --retry 3 -fsSL"
+ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 
 # Versioning
-ARG CMAKE_VERSION=3.29.1
-ARG OPENSSL_VERSION=openssl-3.3.0
+ARG CMAKE_VERSION=3.30.2
+ARG OPENSSL_VERSION=openssl-3.3.1
 ARG LLVM_VERSION=18
 ARG OPENBSD_MAJOR=7
 
@@ -77,7 +77,7 @@ ENV CARGO_TARGET_X86_64_UNKNOWN_OPENBSD_LINKER="$CROSS_TOOLCHAIN_PREFIX"clang \
     BINDGEN_EXTRA_CLANG_ARGS_x86_64_unknown_openbsd="--sysroot=$CROSS_SYSROOT" \
     RUST_TEST_THREADS=1 \
     PKG_CONFIG_ALLOW_CROSS_x86_64_unknown_openbsd=true \
-    PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/usr/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/:${PKG_CONFIG_PATH}" \
+    PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/usr/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/" \
     PKG_CONFIG_ALLOW_CROSS=1 \
     CROSS_CMAKE_SYSTEM_NAME=OpenBSD \
     CROSS_CMAKE_SYSTEM_PROCESSOR=amd64 \

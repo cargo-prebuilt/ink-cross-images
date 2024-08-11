@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG DEBIAN_VERSION=12-slim
-ARG ALPINE_VERSION=edge
-FROM alpine:$ALPINE_VERSION as rooter
+ARG ALPINE_VERSION=3
+FROM alpine:$ALPINE_VERSION AS rooter
 
 ARG CROSS_TOOLCHAIN=aarch64-linux-musl
 ARG APK_ARCH=aarch64
@@ -15,11 +15,11 @@ RUN --mount=type=bind,source=./scripts/extract-alpine-sysroot.sh,target=/run.sh 
 FROM debian:$DEBIAN_VERSION
 
 # Build CMDS
-ARG EXT_CURL_CMD="curl --retry 3 -fsSL"
+ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 
 # Versioning
-ARG CMAKE_VERSION=3.29.1
-ARG OPENSSL_VERSION=openssl-3.3.0
+ARG CMAKE_VERSION=3.30.2
+ARG OPENSSL_VERSION=openssl-3.3.1
 ARG LLVM_VERSION=18
 
 # Do not set
@@ -83,7 +83,7 @@ ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER="$CROSS_TOOLCHAIN_PREFIX"clan
     BINDGEN_EXTRA_CLANG_ARGS_aarch64_unknown_linux_musl="--sysroot=$CROSS_SYSROOT" \
     RUST_TEST_THREADS=1 \
     PKG_CONFIG_ALLOW_CROSS_aarch64_unknown_linux_musl=true \
-    PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/usr/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/:${PKG_CONFIG_PATH}" \
+    PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/usr/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/" \
     CROSS_CMAKE_SYSTEM_NAME=Linux \
     CROSS_CMAKE_SYSTEM_PROCESSOR=aarch64 \
     CROSS_CMAKE_CRT=musl \

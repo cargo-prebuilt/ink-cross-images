@@ -70,10 +70,10 @@ NETBSD_URL="https://ftp.netbsd.org/pub/NetBSD/NetBSD-$NETBSD_VERSION/$NETBSD_ARC
 
 $EXT_CURL_CMD "$NETBSD_URL"base.tar.xz -o base.tar.xz
 mkdir -p ./netbsd
-tar -xJvf base.tar.xz -C ./netbsd
+tar -xJf base.tar.xz -C ./netbsd
 
 $EXT_CURL_CMD "$NETBSD_URL"comp.tar.xz -o comp.tar.xz
-tar -xJvf comp.tar.xz -C ./netbsd
+tar -xJf comp.tar.xz -C ./netbsd
 
 mkdir -p "$CROSS_SYSROOT"/usr
 mkdir -p "$CROSS_SYSROOT"/usr/include

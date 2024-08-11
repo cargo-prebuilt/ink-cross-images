@@ -3,11 +3,11 @@ ARG DEBIAN_VERSION=12-slim
 FROM debian:$DEBIAN_VERSION
 
 # Build CMDS
-ARG EXT_CURL_CMD="curl --retry 3 -fsSL"
+ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 
 # Versioning
-ARG CMAKE_VERSION=3.29.1
-ARG OPENSSL_VERSION=openssl-3.3.0
+ARG CMAKE_VERSION=3.30.2
+ARG OPENSSL_VERSION=openssl-3.3.1
 
 # Do not set
 ARG DEBIAN_FRONTEND=noninteractive
@@ -62,7 +62,7 @@ ENV CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_LINKER="$CROSS_TOOLCHAIN_PREFIX"gcc \
     BINDGEN_EXTRA_CLANG_ARGS_s390x_unknown_linux_gnu="--sysroot=$CROSS_SYSROOT" \
     RUST_TEST_THREADS=1 \
     PKG_CONFIG_ALLOW_CROSS_s390x_unknown_linux_gnu=true \
-    PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/:${PKG_CONFIG_PATH}" \
+    PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/" \
     CROSS_CMAKE_SYSTEM_NAME=Linux \
     CROSS_CMAKE_SYSTEM_PROCESSOR=s390x \
     CROSS_CMAKE_CRT=gnu \

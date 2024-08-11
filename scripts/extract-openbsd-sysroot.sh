@@ -70,7 +70,7 @@ OPENBSD_URL="https://cdn.openbsd.org/pub/OpenBSD/$OPENBSD_VERSION/$OPENBSD_ARCH/
 
 $EXT_CURL_CMD "$OPENBSD_URL"base"${OPENBSD_VERSION//.}".tgz -o base.tgz
 mkdir -p ./openbsd
-tar -xzvf base.tgz -C ./openbsd
+tar -xzf base.tgz -C ./openbsd
 
 mkdir -p "$CROSS_SYSROOT"/usr
 mkdir -p "$CROSS_SYSROOT"/usr/include
