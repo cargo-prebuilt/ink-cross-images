@@ -10,10 +10,11 @@ FROM debian:$DEBIAN_VERSION
 ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 
 # Versioning
-ARG CMAKE_VERSION=3.30.2
-ARG OPENSSL_VERSION=openssl-3.3.1
-ARG LLVM_VERSION=18
-ARG OPENBSD_MAJOR=7
+ARG CMAKE_VERSION=3.30.4
+ARG OPENSSL_VERSION=openssl-3.3.2
+ARG LLVM_VERSION=19
+# Bypass openbsd cdn listing a release that is not out. (#36)
+ARG OPENBSD_MAJOR=7.5
 
 # Do not set
 ARG DEBIAN_FRONTEND=noninteractive
