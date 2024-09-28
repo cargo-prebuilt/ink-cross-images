@@ -6,8 +6,8 @@ FROM debian:$DEBIAN_VERSION
 ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 
 # Versioning
-ARG CMAKE_VERSION=3.30.2
-ARG OPENSSL_VERSION=openssl-3.3.1
+ARG CMAKE_VERSION=3.30.4
+ARG OPENSSL_VERSION=openssl-3.3.2
 
 # Do not set
 ARG DEBIAN_FRONTEND=noninteractive
