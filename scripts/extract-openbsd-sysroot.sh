@@ -65,7 +65,10 @@ latest_openbsd() {
 mkdir -p /tmp/openbsd
 pushd /tmp/openbsd
 
-OPENBSD_VERSION="$(latest_openbsd 'https://cdn.openbsd.org/pub/OpenBSD')"
+# Bypass openbsd cdn listing a release that is not out. (#36)
+OPENBSD_VERSION="$OPENBSD_MAJOR"
+
+#OPENBSD_VERSION="$(latest_openbsd 'https://cdn.openbsd.org/pub/OpenBSD')"
 OPENBSD_URL="https://cdn.openbsd.org/pub/OpenBSD/$OPENBSD_VERSION/$OPENBSD_ARCH/"
 
 $EXT_CURL_CMD "$OPENBSD_URL"base"${OPENBSD_VERSION//.}".tgz -o base.tgz

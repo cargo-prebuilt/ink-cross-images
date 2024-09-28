@@ -13,7 +13,8 @@ ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 ARG CMAKE_VERSION=3.30.3
 ARG OPENSSL_VERSION=openssl-3.3.2
 ARG LLVM_VERSION=19
-ARG OPENBSD_MAJOR=7
+# Bypass openbsd cdn listing a release that is not out. (#36)
+ARG OPENBSD_MAJOR=7.5
 
 # Do not set
 ARG DEBIAN_FRONTEND=noninteractive
