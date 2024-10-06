@@ -31,30 +31,34 @@ ENV RUSTUP_HOME=/usr/local/rustup
 ENV CARGO_HOME=/usr/local/cargo
 ENV PATH=/usr/local/cargo/bin:$PATH
 
+# For auditing
+COPY ./docker/"$RUST_TARGET".Dockerfile /ink/
+COPY ./scripts /ink/scripts/
+
 # Upgrade and install apt packages
-RUN --mount=type=bind,source=./scripts/manage-apt.sh,target=/run.sh /run.sh
+RUN /ink/scripts/manage-apt.sh
 
 # Install cmake
-RUN --mount=type=bind,source=./scripts/install-cmake.sh,target=/run.sh /run.sh
+RUN /ink/scripts/install-cmake.sh
 COPY ./cmake/toolchain-gcc.cmake /opt/toolchain.cmake
 
 # Openssl
 ENV OPENSSL_DIR=$CROSS_SYSROOT
-RUN --mount=type=bind,source=./scripts/install-openssl-gnu.sh,target=/run.sh /run.sh
+RUN /ink/scripts/install-openssl-gnu.sh
 
 # Cargo prebuilt
-RUN --mount=type=bind,source=./scripts/install-cargo-prebuilt.sh,target=/run.sh /run.sh
+RUN /ink/scripts/install-cargo-prebuilt.sh
 
 # Install rust
 ARG RUST_VERSION=stable
-RUN --mount=type=bind,source=./scripts/install-rustup.sh,target=/run.sh /run.sh
+RUN /ink/scripts/install-rustup.sh
 
 # Install rust target
 ENV RUST_TARGET=$RUST_TARGET
 RUN rustup target add "$RUST_TARGET"
 
 # Create Entrypoint
-RUN --mount=type=bind,source=./scripts/entrypoint.sh,target=/run.sh /run.sh
+RUN /ink/scripts/entrypoint.sh
 
 ENV CROSS_TOOLCHAIN_PREFIX=$CROSS_TOOLCHAIN_PREFIX
 ENV CROSS_SYSROOT=$CROSS_SYSROOT
