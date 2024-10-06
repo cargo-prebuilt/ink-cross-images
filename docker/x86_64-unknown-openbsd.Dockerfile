@@ -35,38 +35,42 @@ ENV RUSTUP_HOME=/usr/local/rustup
 ENV CARGO_HOME=/usr/local/cargo
 ENV PATH=/usr/local/cargo/bin:$PATH
 
+# For auditing
+COPY ./docker/"$RUST_TARGET".Dockerfile /ink/
+COPY ./scripts /ink/scripts/
+
 # Upgrade and install apt packages
-RUN --mount=type=bind,source=./scripts/manage-apt.sh,target=/run.sh /run.sh
+RUN /ink/scripts/manage-apt.sh
 
 # Install cmake
-RUN --mount=type=bind,source=./scripts/install-cmake.sh,target=/run.sh /run.sh
+RUN /ink/scripts/install-cmake.sh
 COPY ./cmake/toolchain-clang.cmake /opt/toolchain.cmake
 
 # Install clang
 ENV PATH=$PATH:$CROSS_SYSROOT/usr/bin
-RUN --mount=type=bind,source=./scripts/install-clang.sh,target=/run.sh /run.sh
-RUN --mount=type=bind,source=./scripts/setup-clang.sh,target=/run.sh /run.sh
+RUN /ink/scripts/install-clang.sh
+RUN /ink/scripts/setup-clang.sh
 
 # Install openbsd
-RUN --mount=type=bind,source=./scripts/extract-openbsd-sysroot.sh,target=/run.sh /run.sh
+RUN /ink/scripts/extract-openbsd-sysroot.sh
 
 # Openssl
 ENV OPENSSL_DIR=$CROSS_SYSROOT/usr
-RUN --mount=type=bind,source=./scripts/install-openssl-musl.sh,target=/run.sh /run.sh
+RUN /ink/scripts/install-openssl-musl.sh
 
 # Cargo prebuilt
-RUN --mount=type=bind,source=./scripts/install-cargo-prebuilt.sh,target=/run.sh /run.sh
+RUN /ink/scripts/install-cargo-prebuilt.sh
 
 # Install rust
 ARG RUST_VERSION=nightly
-RUN --mount=type=bind,source=./scripts/install-rustup.sh,target=/run.sh /run.sh
+RUN /ink/scripts/install-rustup.sh
 
 # Install rust target
 ENV RUST_TARGET=$RUST_TARGET
 # RUN rustup target add "$RUST_TARGET"
 
 # Create Entrypoint
-RUN --mount=type=bind,source=./scripts/entrypoint.sh,target=/run.sh /run.sh
+RUN /ink/scripts/entrypoint.sh
 
 ENV CROSS_TOOLCHAIN_PREFIX=$CROSS_TOOLCHAIN_PREFIX
 ENV CROSS_SYSROOT=$CROSS_SYSROOT

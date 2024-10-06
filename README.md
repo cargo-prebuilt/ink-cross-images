@@ -77,6 +77,10 @@ Targets:
 - GNU images are /usr/$CROSS_TOOLCHAIN/{include,lib}.
   All others are /usr/$CROSS_TOOLCHAIN/usr/{include,lib}.
 
+## Auditing
+
+All scripts + the dockerfile are included under `/ink` in the image.
+
 ## Acknowledgments
 
 - [cross-rs](https://github.com/cross-rs/cross)
