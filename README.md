@@ -62,6 +62,7 @@ Targets:
 - powerpc64-unknown-linux-gnu (bleeding, amd64)
 - powerpc64le-unknown-linux-gnu
 - riscv64gc-unknown-linux-gnu
+- riscv64gc-unknown-linux-musl (experimental)
 - s390x-unknown-linux-gnu
 - sparc64-unknown-linux-gnu (bleeding, amd64)
 - x86_64-unknown-freebsd
