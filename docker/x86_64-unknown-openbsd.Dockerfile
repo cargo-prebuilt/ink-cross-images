@@ -14,7 +14,7 @@ ARG CMAKE_VERSION=3.30.4
 ARG OPENSSL_VERSION=openssl-3.3.2
 ARG LLVM_VERSION=19
 # Bypass openbsd cdn listing a release that is not out. (#36)
-ARG OPENBSD_MAJOR=7.5
+ARG OPENBSD_MAJOR=7.6
 
 # Do not set
 ARG DEBIAN_FRONTEND=noninteractive
