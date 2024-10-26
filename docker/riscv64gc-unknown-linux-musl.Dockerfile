@@ -1,10 +1,18 @@
 # syntax=docker/dockerfile:1
 ARG DEBIAN_VERSION=12-slim
-FROM debian:$DEBIAN_VERSION
+ARG ALPINE_VERSION=3
+FROM alpine:$ALPINE_VERSION AS rooter
 
-################################
-# This target is nightly ONLY! #
-################################
+ARG CROSS_TOOLCHAIN=riscv64-linux-musl
+ARG APK_ARCH=riscv64
+
+# Script requires bash
+RUN apk --no-cache add bash
+
+# Setup sysroot
+RUN --mount=type=bind,source=./scripts/extract-alpine-sysroot.sh,target=/run.sh /run.sh
+
+FROM debian:$DEBIAN_VERSION
 
 # Build CMDS
 ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
@@ -13,23 +21,20 @@ ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 ARG CMAKE_VERSION=3.30.4
 ARG OPENSSL_VERSION=openssl-3.3.2
 ARG LLVM_VERSION=19
-# Bypass openbsd cdn listing a release that is not out. (#36)
-ARG OPENBSD_MAJOR=7.6
 
 # Do not set
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TARGETARCH
 
-ARG RUST_TARGET=x86_64-unknown-openbsd
-ARG OPENBSD_ARCH=amd64
+ARG RUST_TARGET=riscv64gc-unknown-linux-musl
 
-ARG CROSS_TOOLCHAIN=x86_64-unknown-openbsd"$OPENBSD_MAJOR"
+ARG CROSS_TOOLCHAIN=riscv64-linux-musl
 ARG CROSS_TOOLCHAIN_PREFIX="$CROSS_TOOLCHAIN"-
 ARG CROSS_SYSROOT=/usr/"$CROSS_TOOLCHAIN"
 
-ARG OPENSSL_COMBO=BSD-x86_64
+ARG OPENSSL_COMBO=linux64-riscv64
 
-ARG LLVM_TARGET=$RUST_TARGET
+ARG LLVM_TARGET=riscv64-unknown-linux-musl
 
 ENV RUSTUP_HOME=/usr/local/rustup
 ENV CARGO_HOME=/usr/local/cargo
@@ -49,45 +54,44 @@ COPY ./cmake/toolchain-clang.cmake /opt/toolchain.cmake
 # Install clang
 ENV PATH=$PATH:$CROSS_SYSROOT/usr/bin
 RUN /ink/scripts/install-clang.sh
-RUN /ink/scripts/setup-clang.sh
 
-# Install openbsd
-RUN /ink/scripts/extract-openbsd-sysroot.sh
+# Install sysroot (musl + libstdc++ + libgcc)
+COPY --from=rooter /opt/export/ $CROSS_SYSROOT/usr
+RUN /ink/scripts/setup-clang.sh
 
 # Openssl
 ENV OPENSSL_DIR=$CROSS_SYSROOT/usr
-RUN /ink/scripts/install-openssl-musl.sh
+RUN /ink/scripts/install-openssl-clang.sh
 
 # Cargo prebuilt
 RUN /ink/scripts/install-cargo-prebuilt.sh
 
 # Install rust
-ARG RUST_VERSION=nightly
+ARG RUST_VERSION=stable
 RUN /ink/scripts/install-rustup.sh
 
 # Install rust target
 ENV RUST_TARGET=$RUST_TARGET
-# RUN rustup target add "$RUST_TARGET"
+RUN rustup target add "$RUST_TARGET"
 
 # Create Entrypoint
 RUN /ink/scripts/entrypoint.sh
 
 ENV CROSS_TOOLCHAIN_PREFIX=$CROSS_TOOLCHAIN_PREFIX
 ENV CROSS_SYSROOT=$CROSS_SYSROOT
-ENV CARGO_TARGET_X86_64_UNKNOWN_OPENBSD_LINKER="$CROSS_TOOLCHAIN_PREFIX"clang \
-    AR_x86_64_unknown_openbsd="$CROSS_TOOLCHAIN_PREFIX"ar \
-    CC_x86_64_unknown_openbsd="$CROSS_TOOLCHAIN_PREFIX"clang \
-    CXX_x86_64_unknown_openbsd="$CROSS_TOOLCHAIN_PREFIX"clang++ \
-    CMAKE_TOOLCHAIN_FILE_x86_64_unknown_openbsd=/opt/toolchain.cmake \
-    BINDGEN_EXTRA_CLANG_ARGS_x86_64_unknown_openbsd="--sysroot=$CROSS_SYSROOT" \
+ENV CARGO_TARGET_RISCV64GC_UNKNOWN_LINUX_MUSL_LINKER="$CROSS_TOOLCHAIN_PREFIX"clang \
+    AR_riscv64gc_unknown_linux_musl="$CROSS_TOOLCHAIN_PREFIX"ar \
+    CC_riscv64gc_unknown_linux_musl="$CROSS_TOOLCHAIN_PREFIX"clang \
+    CXX_riscv64gc_unknown_linux_musl="$CROSS_TOOLCHAIN_PREFIX"clang++ \
+    CMAKE_TOOLCHAIN_FILE_riscv64gc_unknown_linux_musl=/opt/toolchain.cmake \
+    BINDGEN_EXTRA_CLANG_ARGS_riscv64gc_unknown_linux_musl="--sysroot=$CROSS_SYSROOT" \
     RUST_TEST_THREADS=1 \
-    PKG_CONFIG_ALLOW_CROSS_x86_64_unknown_openbsd=true \
+    PKG_CONFIG_ALLOW_CROSS_riscv64gc_unknown_linux_musl=true \
     PKG_CONFIG_PATH="/usr/$CROSS_TOOLCHAIN/usr/lib/pkgconfig/:/usr/local/$CROSS_TOOLCHAIN/lib/pkgconfig/:/usr/lib/$CROSS_TOOLCHAIN/pkgconfig/" \
-    PKG_CONFIG_ALLOW_CROSS=1 \
-    CROSS_CMAKE_SYSTEM_NAME=OpenBSD \
-    CROSS_CMAKE_SYSTEM_PROCESSOR=amd64 \
-    CROSS_CMAKE_CRT=openbsd \
-    CROSS_CMAKE_OBJECT_FLAGS="-ffunction-sections -fdata-sections -fPIC -m64"
+    CROSS_CMAKE_SYSTEM_NAME=Linux \
+    CROSS_CMAKE_SYSTEM_PROCESSOR=riscv64 \
+    CROSS_CMAKE_CRT=musl \
+    CROSS_CMAKE_OBJECT_FLAGS="-ffunction-sections -fdata-sections -fPIC"
 
 ENV CARGO_BUILD_TARGET=$RUST_TARGET \
     CARGO_TERM_COLOR=always

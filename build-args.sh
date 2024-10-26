@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "CMAKE_VERSION=3.30.4" >> $GITHUB_ENV
+echo "CMAKE_VERSION=3.30.5" >> $GITHUB_ENV
 echo "OPENSSL_VERSION=openssl-3.3.2" >> $GITHUB_ENV
 echo "LLVM_VERSION=19" >> $GITHUB_ENV
 echo "MUSL_VERSION=1.2.5" >> $GITHUB_ENV
