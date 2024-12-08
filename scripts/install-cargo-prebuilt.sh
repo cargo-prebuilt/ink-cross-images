@@ -23,7 +23,7 @@ arm64)
 esac
 
 # Packages
-cargo-prebuilt cargo-auditable,cargo-quickinstall,cargo-binstall
+cargo-prebuilt cargo-auditable,cargo-quickinstall,cargo-binstall,bindgen-cli
 
 popd
 rm -rf /tmp/prebuilt
