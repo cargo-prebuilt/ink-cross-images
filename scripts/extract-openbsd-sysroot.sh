@@ -34,7 +34,7 @@ latest_openbsd() {
     local max_release=
 
     response=$(curl --retry 3 -sSfL "${mirror}/" | grep \>${OPENBSD_MAJOR}\.)
-    if [[ ! -n "${response}" ]]; then
+    if [[ -z "${response}" ]]; then
         echo -e "\e[31merror:\e[0m could not find a candidate release for OpenBSD ${OPENBSD_MAJOR}." 1>&2
         exit 1
     fi

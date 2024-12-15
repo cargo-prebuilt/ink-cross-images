@@ -23,7 +23,7 @@ apt install -y --no-install-recommends \
     meson \
     ninja-build
 
-if [ ! -z "${GCC_PKGS+x}" ]; then
+if [ -n "${GCC_PKGS+x}" ]; then
     apt install -y --no-install-recommends $GCC_PKGS
 fi
 
