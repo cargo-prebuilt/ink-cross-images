@@ -22,7 +22,7 @@ mkdir -p $EXPORT/lib/gcc/"$CROSS_TOOLCHAIN"
 cp -r $CHROOT/usr/include $EXPORT
 
 pushd $EXPORT/include/c++/*.*.*
-mv *-alpine-linux-musl* "$CROSS_TOOLCHAIN"
+mv ./*-alpine-linux-musl* "$CROSS_TOOLCHAIN"
 popd
 
 # Lib

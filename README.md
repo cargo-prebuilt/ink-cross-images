@@ -17,8 +17,8 @@ Debug Build:
 
 ```shell
 docker run --rm \
-    --userns host --user $(id -u):$(id -g) \
-    -v $HOME/.cargo/registry:/usr/local/cargo/registry \
+    --userns host --user "$(id -u):$(id -g)" \
+    -v "$HOME/.cargo/registry:/usr/local/cargo/registry" \
     -v ./:/project \
     ghcr.io/cargo-prebuilt/ink-cross:stable-$TARGET
 ```
@@ -27,8 +27,8 @@ Release Build:
 
 ```shell
 docker run --rm \
-    --userns host --user $(id -u):$(id -g) \
-    -v $HOME/.cargo/registry:/usr/local/cargo/registry \
+    --userns host --user "$(id -u):$(id -g)" \
+    -v "$HOME/.cargo/registry:/usr/local/cargo/registry" \
     -v ./:/project \
     ghcr.io/cargo-prebuilt/ink-cross:stable-$TARGET \
     auditable build --verbose --release --locked

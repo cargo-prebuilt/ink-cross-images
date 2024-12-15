@@ -20,11 +20,11 @@ mkdir -p "target/$RUSTUP_ARCH/release"
 $EXT_CURL_CMD "https://static.rust-lang.org/rustup/dist/$RUSTUP_ARCH/rustup-init" -o "rustup-init"
 $EXT_CURL_CMD "https://static.rust-lang.org/rustup/dist/$RUSTUP_ARCH/rustup-init.sha256" | sha256sum -c -
 chmod +x "rustup-init"
-./"rustup-init" -y --no-modify-path --profile minimal --default-toolchain $RUST_VERSION --default-host $RUSTUP_ARCH
-chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+./"rustup-init" -y --no-modify-path --profile minimal --default-toolchain "$RUST_VERSION" --default-host "$RUSTUP_ARCH"
+chmod -R a+w "$RUSTUP_HOME" "$CARGO_HOME"
 
-rustup component add --toolchain $RUST_VERSION clippy
-rustup component add --toolchain $RUST_VERSION rustfmt
+rustup component add --toolchain "$RUST_VERSION" clippy
+rustup component add --toolchain "$RUST_VERSION" rustfmt
 
 if [ "$RUST_VERSION" = "nightly" ]; then
     rustup toolchain install nightly --allow-downgrade -c rust-src,rustfmt,clippy,miri
