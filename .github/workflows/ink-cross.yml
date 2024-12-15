@@ -106,6 +106,8 @@ jobs:
           cache-to: type=inline
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
+          provenance: mode=max
+          sbom: true
           tags: ghcr.io/cargo-prebuilt/ink-cross:${{ env.LATEST_RUST_VERSION }}-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:${{ env.LATEST_RUST_VERSION }}-${{ matrix.target }}
           build-args: |
             RUST_VERSION=${{ env.LATEST_RUST_VERSION }}
@@ -127,6 +129,7 @@ jobs:
             tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
+            org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
           platforms: ${{ matrix.platforms }}
           builder: ${{ steps.buildx.outputs.name }}
 
@@ -139,6 +142,8 @@ jobs:
           cache-from: type=inline
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
+          provenance: mode=max
+          sbom: true
           tags: ghcr.io/cargo-prebuilt/ink-cross:stable-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:stable-${{ matrix.target }}
           build-args: |
             RUST_VERSION=stable
@@ -162,6 +167,7 @@ jobs:
             tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
+            org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
           platforms: ${{ matrix.platforms }}
           builder: ${{ steps.buildx.outputs.name }}
 
@@ -174,6 +180,8 @@ jobs:
           cache-from: type=inline
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
+          provenance: mode=max
+          sbom: true
           tags: ghcr.io/cargo-prebuilt/ink-cross:beta-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:beta-${{ matrix.target }}
           build-args: |
             RUST_VERSION=beta
@@ -197,6 +205,7 @@ jobs:
             tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
+            org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
           platforms: ${{ matrix.platforms }}
           builder: ${{ steps.buildx.outputs.name }}
 
@@ -208,6 +217,8 @@ jobs:
           cache-from: type=inline
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
+          provenance: mode=max
+          sbom: true
           tags: ghcr.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }}
           build-args: |
             RUST_VERSION=nightly
@@ -231,5 +242,6 @@ jobs:
             tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
+            org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
           platforms: ${{ matrix.platforms }}
           builder: ${{ steps.buildx.outputs.name }}
