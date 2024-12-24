@@ -18,8 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       build-date: ${{ steps.date.outputs.BUILD_DATE }}
-      latest-rust-version: ${{ steps.date.outputs.LATEST_RUST_VERSION }}
-      latest-openssl-version: ${{ steps.date.outputs.LATEST_OPENSSL_VERSION }}
+      latest-rust-version: ${{ steps.rust.outputs.LATEST_RUST_VERSION }}
+      latest-openssl-version: ${{ steps.openssl.outputs.LATEST_OPENSSL_VERSION }}
     steps:
       - name: Build Date
         id: date
@@ -61,14 +61,12 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v3
       - name: Docker Login
-        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker Login
-        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v3
         with:
           registry: quay.io
@@ -130,14 +128,12 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v3
       - name: Docker Login
-        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker Login
-        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v3
         with:
           registry: quay.io
@@ -158,7 +154,7 @@ jobs:
           tags: ghcr.io/cargo-prebuilt/ink-cross:base-step1-${{ env.LATEST_RUST_VERSION }},quay.io/cargo-prebuilt/ink-cross:base-step1-${{ env.LATEST_RUST_VERSION }}
           build-args: |
             IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step0.outputs.digest }}
-            RUST_VERSION=${{ env.LATEST_RUST_VERSION }}
+            RUST_VERSION=${{ env.RUST_VERSION }}
           labels: |
             tech.harmless.ink-cross.target="base/step1/${{ env.LATEST_RUST_VERSION }}"
             tech.harmless.ink-cross.pull_request_build="${{ github.event_name == 'pull_request' }}"
@@ -281,14 +277,12 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v3
       - name: Docker Login
-        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker Login
-        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v3
         with:
           registry: quay.io
@@ -403,22 +397,14 @@ jobs:
           platforms: linux/amd64,linux/arm64
           builder: ${{ steps.buildx.outputs.name }}
 
-# TODO: Clang version!
   ink-cross:
     strategy:
       fail-fast: false
       matrix:
         include:
-          - target: aarch64-unknown-freebsd
-            platforms: linux/amd64,linux/arm64
-            nightly-only: true
           - target: aarch64-unknown-linux-gnu
             platforms: linux/amd64,linux/arm64
-          - target: aarch64-unknown-linux-musl
-            platforms: linux/amd64,linux/arm64
           - target: armv7-unknown-linux-gnueabihf
-            platforms: linux/amd64,linux/arm64
-          - target: armv7-unknown-linux-musleabihf
             platforms: linux/amd64,linux/arm64
           - target: powerpc64-unknown-linux-gnu
             platforms: linux/amd64
@@ -430,19 +416,10 @@ jobs:
             platforms: linux/amd64,linux/arm64
           - target: sparc64-unknown-linux-gnu
             platforms: linux/amd64
-          - target: x86_64-unknown-freebsd
-            platforms: linux/amd64,linux/arm64
           - target: x86_64-unknown-linux-gnu
             platforms: linux/amd64,linux/arm64
-          - target: x86_64-unknown-linux-musl
-            platforms: linux/amd64,linux/arm64
-          - target: x86_64-unknown-netbsd
-            platforms: linux/amd64,linux/arm64
-          - target: x86_64-unknown-openbsd
-            platforms: linux/amd64,linux/arm64
-            nightly-only: true
     runs-on: ubuntu-latest
-    needs: [ vars, ink-cross-step1, ink-cross-step2-clang ]
+    needs: [ vars, ink-cross-step1 ]
     permissions:
       contents: read
       packages: write
@@ -482,7 +459,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./
-          file: ./docker/${{ matrix.target }}.Dockerfile
+          file: ./docker/target/gnu/${{ matrix.target }}.Dockerfile
           no-cache: true
           cache-to: type=inline
           pull: true
@@ -516,7 +493,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./
-          file: ./docker/${{ matrix.target }}.Dockerfile
+          file: ./docker/target/gnu/${{ matrix.target }}.Dockerfile
           cache-from: type=inline
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
@@ -549,7 +526,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./
-          file: ./docker/${{ matrix.target }}.Dockerfile
+          file: ./docker/target/gnu/${{ matrix.target }}.Dockerfile
           cache-from: type=inline
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
@@ -581,7 +558,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./
-          file: ./docker/${{ matrix.target }}.Dockerfile
+          file: ./docker/target/gnu/${{ matrix.target }}.Dockerfile
           cache-from: type=inline
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
@@ -590,6 +567,196 @@ jobs:
           tags: ghcr.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }}
           build-args: |
             IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step1.outputs.digest-nightly }}
+            OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
+            MUSL_VERSION=${{ env.MUSL_VERSION }}
+            FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
+            NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
+            OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
+          labels: |
+            tech.harmless.ink-cross.target="${{ matrix.target }}"
+            tech.harmless.ink-cross.pull_request_build="${{ github.event_name == 'pull_request' }}"
+            tech.harmless.ink-cross.run_number="${{ github.run_number }}"
+            tech.harmless.ink-cross.repo="${{ github.repositoryUrl }}"
+            tech.harmless.ink-cross.build_date="${{ env.BUILD_DATE }}"
+            tech.harmless.ink-cross.version.rust="nightly"
+            tech.harmless.ink-cross.version.cmake="${{ env.CMAKE_VERSION }}"
+            tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
+            tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
+            org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
+            org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
+          platforms: ${{ matrix.platforms }}
+          builder: ${{ steps.buildx.outputs.name }}
+
+  ink-cross-clang:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: aarch64-unknown-freebsd
+            platforms: linux/amd64,linux/arm64
+            nightly-only: true
+          - target: aarch64-unknown-linux-musl
+            platforms: linux/amd64,linux/arm64
+          - target: armv7-unknown-linux-musleabihf
+            platforms: linux/amd64,linux/arm64
+          - target: x86_64-unknown-freebsd
+            platforms: linux/amd64,linux/arm64
+          - target: x86_64-unknown-linux-musl
+            platforms: linux/amd64,linux/arm64
+          - target: x86_64-unknown-netbsd
+            platforms: linux/amd64,linux/arm64
+          - target: x86_64-unknown-openbsd
+            platforms: linux/amd64,linux/arm64
+            nightly-only: true
+    runs-on: ubuntu-latest
+    needs: [ vars, ink-cross-step2-clang ]
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Vars
+        env:
+          BUILD_DATE: ${{ needs.vars.outputs.build-date }}
+          LATEST_RUST_VERSION: ${{ needs.vars.outputs.latest-rust-version }}
+          LATEST_OPENSSL_VERSION: ${{ needs.vars.outputs.latest-openssl-version }}
+        run: ./build-args.sh
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          image: tonistiigi/binfmt:master
+      - name: Docker Setup Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Docker Login
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Docker Login
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: docker/login-action@v3
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_USER }}
+          password: ${{ secrets.QUAY_TOKEN }}
+      - name: Build and push Docker images (pinned)
+        if: ${{ matrix.nightly-only == '' }}
+        uses: docker/build-push-action@v6
+        with:
+          context: ./
+          file: ./docker/target/clang/${{ matrix.target }}.Dockerfile
+          no-cache: true
+          cache-to: type=inline
+          pull: true
+          push: ${{ github.event_name != 'pull_request' }}
+          provenance: mode=max
+          sbom: true
+          tags: ghcr.io/cargo-prebuilt/ink-cross:${{ env.LATEST_RUST_VERSION }}-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:${{ env.LATEST_RUST_VERSION }}-${{ matrix.target }}
+          build-args: |
+            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step2-clang.outputs.digest-pinned }}
+            OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
+            MUSL_VERSION=${{ env.MUSL_VERSION }}
+            FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
+            NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
+            OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
+          labels: |
+            tech.harmless.ink-cross.target="${{ matrix.target }}"
+            tech.harmless.ink-cross.pull_request_build="${{ github.event_name == 'pull_request' }}"
+            tech.harmless.ink-cross.run_number="${{ github.run_number }}"
+            tech.harmless.ink-cross.repo="${{ github.repositoryUrl }}"
+            tech.harmless.ink-cross.build_date="${{ env.BUILD_DATE }}"
+            tech.harmless.ink-cross.version.rust="${{ env.LATEST_RUST_VERSION }}"
+            tech.harmless.ink-cross.version.cmake="${{ env.CMAKE_VERSION }}"
+            tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
+            tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
+            org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
+            org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
+          platforms: ${{ matrix.platforms }}
+          builder: ${{ steps.buildx.outputs.name }}
+      - name: Build and push Docker images (stable)
+        if: ${{ matrix.nightly-only == '' }}
+        uses: docker/build-push-action@v6
+        with:
+          context: ./
+          file: ./docker/target/clang/${{ matrix.target }}.Dockerfile
+          cache-from: type=inline
+          pull: true
+          push: ${{ github.event_name != 'pull_request' }}
+          provenance: mode=max
+          sbom: true
+          tags: ghcr.io/cargo-prebuilt/ink-cross:stable-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:stable-${{ matrix.target }}
+          build-args: |
+            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step2-clang.outputs.digest-stable }}
+            OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
+            MUSL_VERSION=${{ env.MUSL_VERSION }}
+            FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
+            NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
+            OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
+          labels: |
+            tech.harmless.ink-cross.target="${{ matrix.target }}"
+            tech.harmless.ink-cross.pull_request_build="${{ github.event_name == 'pull_request' }}"
+            tech.harmless.ink-cross.run_number="${{ github.run_number }}"
+            tech.harmless.ink-cross.repo="${{ github.repositoryUrl }}"
+            tech.harmless.ink-cross.build_date="${{ env.BUILD_DATE }}"
+            tech.harmless.ink-cross.version.rust="stable"
+            tech.harmless.ink-cross.version.cmake="${{ env.CMAKE_VERSION }}"
+            tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
+            tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
+            org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
+            org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
+          platforms: ${{ matrix.platforms }}
+          builder: ${{ steps.buildx.outputs.name }}
+      - name: Build and push Docker images (beta)
+        if: ${{ matrix.nightly-only == '' }}
+        uses: docker/build-push-action@v6
+        with:
+          context: ./
+          file: ./docker/target/clang/${{ matrix.target }}.Dockerfile
+          cache-from: type=inline
+          pull: true
+          push: ${{ github.event_name != 'pull_request' }}
+          provenance: mode=max
+          sbom: true
+          tags: ghcr.io/cargo-prebuilt/ink-cross:beta-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:beta-${{ matrix.target }}
+          build-args: |
+            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step2-clang.outputs.digest-beta }}
+            OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
+            MUSL_VERSION=${{ env.MUSL_VERSION }}
+            FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
+            NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
+            OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
+          labels: |
+            tech.harmless.ink-cross.target="${{ matrix.target }}"
+            tech.harmless.ink-cross.pull_request_build="${{ github.event_name == 'pull_request' }}"
+            tech.harmless.ink-cross.run_number="${{ github.run_number }}"
+            tech.harmless.ink-cross.repo="${{ github.repositoryUrl }}"
+            tech.harmless.ink-cross.build_date="${{ env.BUILD_DATE }}"
+            tech.harmless.ink-cross.version.rust="beta"
+            tech.harmless.ink-cross.version.cmake="${{ env.CMAKE_VERSION }}"
+            tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
+            tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
+            org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
+            org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
+          platforms: ${{ matrix.platforms }}
+          builder: ${{ steps.buildx.outputs.name }}
+      - name: Build and push Docker images (nightly)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./
+          file: ./docker/target/clang/${{ matrix.target }}.Dockerfile
+          cache-from: type=inline
+          pull: true
+          push: ${{ github.event_name != 'pull_request' }}
+          provenance: mode=max
+          sbom: true
+          tags: ghcr.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }}
+          build-args: |
+            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step2-clang.outputs.digest-nightly }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
