@@ -2,21 +2,41 @@
 
 set -euxo pipefail
 
-mkdir -p /tmp/openssl
-pushd /tmp/openssl
+pushd "/tmp/${RUST_TARGET}/${TARGETARCH}/openssl"
 
-git clone --depth=1 -b "$OPENSSL_VERSION" https://github.com/openssl/openssl.git openssl
-cd ./openssl
+# Cache String
+CACHE_STR="/tmp/${RUST_TARGET}/${TARGETARCH}/openssl/OPENSSL.CACHETAG
+SCRIPT_TYPE=musl
+OPENSSL_VERSION=${OPENSSL_VERSION}
+CACHE_BUST=${CACHE_BUST}
+AR=${CROSS_TOOLCHAIN_PREFIX}ar
+CC=${CROSS_TOOLCHAIN_PREFIX}clang
+OPENSSL_COMBO=${OPENSSL_COMBO}
+CROSS_SYSROOT=${CROSS_SYSROOT}
+CROSS_TOOLCHAIN=${CROSS_TOOLCHAIN}"
 
-AR="$CROSS_TOOLCHAIN_PREFIX"ar CC="$CROSS_TOOLCHAIN_PREFIX"clang ./Configure "$OPENSSL_COMBO" \
-    --libdir=lib --prefix="$CROSS_SYSROOT"/usr --openssldir="/usr/local/$CROSS_TOOLCHAIN/ssl" \
-    no-dso no-shared no-ssl3 no-tests no-comp \
-    no-legacy no-camellia no-idea no-seed \
-    no-engine no-async -DOPENSSL_NO_SECURE_MEMORY # Musl options
+if [ ! -e OPENSSL.CACHETAG ] || [[ $(< OPENSSL.CACHETAG) != "${CACHE_STR}" ]]; then
+    rm -rf ./*
 
-make "-j$(nproc)"
+    git clone --depth=1 -b "${OPENSSL_VERSION}" https://github.com/openssl/openssl.git openssl
+    pushd ./openssl
+
+    AR="$CROSS_TOOLCHAIN_PREFIX"ar CC="$CROSS_TOOLCHAIN_PREFIX"clang ./Configure "$OPENSSL_COMBO" \
+        --libdir=lib --prefix="$CROSS_SYSROOT"/usr --openssldir="/usr/local/$CROSS_TOOLCHAIN/ssl" \
+        no-dso no-shared no-ssl3 no-tests no-comp \
+        no-legacy no-camellia no-idea no-seed \
+        no-engine no-async -DOPENSSL_NO_SECURE_MEMORY # Musl options
+
+    make "-j$(nproc)"
+
+    popd
+    echo "${CACHE_STR}" > "OPENSSL.CACHETAG"
+fi
+
+pushd ./openssl
+
 make "-j$(nproc)" install_sw
 make "-j$(nproc)" install_ssldirs
 
 popd
-rm -rf /tmp/openssl
+popd

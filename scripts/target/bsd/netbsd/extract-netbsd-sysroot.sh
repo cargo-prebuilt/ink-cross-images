@@ -62,18 +62,31 @@ latest_netbsd() {
 }
 ###
 
-mkdir -p /tmp/netbsd
-pushd /tmp/netbsd
+pushd "/tmp/${RUST_TARGET}/${TARGETARCH}/netbsd"
 
 NETBSD_VERSION="$(latest_netbsd 'https://ftp.netbsd.org/pub/NetBSD')"
 NETBSD_URL="https://ftp.netbsd.org/pub/NetBSD/NetBSD-$NETBSD_VERSION/$NETBSD_ARCH/binary/sets/"
 
-$EXT_CURL_CMD "$NETBSD_URL"base.tar.xz -o base.tar.xz
-mkdir -p ./netbsd
-tar -xJf base.tar.xz -C ./netbsd
+# Cache String
+CACHE_STR="/tmp/${RUST_TARGET}/${TARGETARCH}/netbsd/NETBSD.CACHETAG
+NETBSD_VERSION=${NETBSD_VERSION}
+NETBSD_URL=${NETBSD_URL}
+CACHE_BUST=${CACHE_BUST}
+EXT_CURL_CMD=${EXT_CURL_CMD}
+CROSS_SYSROOT=${CROSS_SYSROOT}"
 
-$EXT_CURL_CMD "$NETBSD_URL"comp.tar.xz -o comp.tar.xz
-tar -xJf comp.tar.xz -C ./netbsd
+if [ ! -e NETBSD.CACHETAG ] || [[ $(< NETBSD.CACHETAG) != "${CACHE_STR}" ]]; then
+    rm -rf ./*
+
+    $EXT_CURL_CMD "$NETBSD_URL"base.tar.xz -o base.tar.xz
+    mkdir -p ./netbsd
+    tar -xJf base.tar.xz -C ./netbsd
+
+    $EXT_CURL_CMD "$NETBSD_URL"comp.tar.xz -o comp.tar.xz
+    tar -xJf comp.tar.xz -C ./netbsd
+
+    echo "${CACHE_STR}" > "NETBSD.CACHETAG"
+fi
 
 mkdir -p "$CROSS_SYSROOT"/usr
 mkdir -p "$CROSS_SYSROOT"/usr/include
@@ -97,4 +110,3 @@ cp ./netbsd/usr/lib/*crt*.o "$CROSS_SYSROOT"/usr/lib
 cp ./netbsd/usr/lib/libkvm.{so,a}* "$CROSS_SYSROOT"/usr/lib
 
 popd
-rm -rf /tmp/netbsd

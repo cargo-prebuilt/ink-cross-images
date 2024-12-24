@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euxo pipefail
+
 {
 	echo "CMAKE_VERSION=3.31.2"
 	#echo "OPENSSL_VERSION=openssl-3.4.0"

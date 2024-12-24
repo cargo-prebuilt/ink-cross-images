@@ -5,6 +5,7 @@ FROM ${IMG_BASE}
 # Build CMDS
 ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 ARG TARGETARCH
+ARG CACHE_BUST=cache-v0
 
 # Versioning
 ARG OPENSSL_VERSION=openssl-3.4.0
@@ -30,12 +31,14 @@ COPY ./docker/target/clang/$RUST_TARGET.Dockerfile /ink/dockerfiles
 ENV PATH=$PATH:$CROSS_SYSROOT/usr/bin
 RUN /ink/scripts/target/clang/setup-clang.sh
 
-# Install freebsd
-RUN /ink/scripts/target/bsd/netbsd/extract-netbsd-sysroot.sh
+# Install netbsd
+RUN --mount=type=cache,target="/tmp/${RUST_TARGET}/${TARGETARCH}/netbsd",sharing=locked \
+    /ink/scripts/target/bsd/netbsd/extract-netbsd-sysroot.sh
 
 # Openssl
 ENV OPENSSL_DIR=$CROSS_SYSROOT/usr
-RUN /ink/scripts/target/clang/install-openssl-clang.sh
+RUN --mount=type=cache,target="/tmp/${RUST_TARGET}/${TARGETARCH}/openssl",sharing=locked \
+    /ink/scripts/target/clang/install-openssl-clang.sh
 
 # Install rust target
 ENV RUST_TARGET=$RUST_TARGET
@@ -43,11 +46,11 @@ RUN rustup target add "$RUST_TARGET"
 
 ENV CROSS_TOOLCHAIN_PREFIX=$CROSS_TOOLCHAIN_PREFIX
 ENV CROSS_SYSROOT=$CROSS_SYSROOT
-ENV CARGO_TARGET_X86_64_UNKNOWN_NETBSD_LINKER="${CROSS_TOOLCHAIN_PREFIX}clang" \
+ENV CARGO_TARGET_X86_64_UNKNOWN_NETBSD_LINKER=${CROSS_TOOLCHAIN_PREFIX}clang \
     CARGO_BUILD_TARGET=$RUST_TARGET \
-    AR_x86_64_unknown_netbsd="${CROSS_TOOLCHAIN_PREFIX}ar" \
-    CC_x86_64_unknown_netbsd="${CROSS_TOOLCHAIN_PREFIX}clang" \
-    CXX_x86_64_unknown_netbsd="${CROSS_TOOLCHAIN_PREFIX}clang++" \
+    AR_x86_64_unknown_netbsd=${CROSS_TOOLCHAIN_PREFIX}ar \
+    CC_x86_64_unknown_netbsd=${CROSS_TOOLCHAIN_PREFIX}clang \
+    CXX_x86_64_unknown_netbsd=${CROSS_TOOLCHAIN_PREFIX}clang++ \
     CMAKE_TOOLCHAIN_FILE_x86_64_unknown_netbsd=/opt/toolchain.cmake \
     BINDGEN_EXTRA_CLANG_ARGS_x86_64_unknown_netbsd="--sysroot=$CROSS_SYSROOT" \
     RUST_TEST_THREADS=1 \

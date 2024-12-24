@@ -62,15 +62,28 @@ latest_freebsd() {
 }
 ###
 
-mkdir -p /tmp/freebsd
-pushd /tmp/freebsd
+pushd "/tmp/${RUST_TARGET}/${TARGETARCH}/freebsd"
 
 FREEBSD_VERSION="$(latest_freebsd 'https://download.freebsd.org/ftp/releases')"
 FREEBSD_URL="https://download.freebsd.org/ftp/releases/$FREEBSD_ARCH/$FREEBSD_VERSION-RELEASE/"
 
-$EXT_CURL_CMD "$FREEBSD_URL"base.txz -o base.txz
-mkdir -p ./freebsd
-tar -xJf base.txz -C ./freebsd
+# Cache String
+CACHE_STR="/tmp/${RUST_TARGET}/${TARGETARCH}/freebsd/FREEBSD.CACHETAG
+FREEBSD_VERSION=${FREEBSD_VERSION}
+FREEBSD_URL=${FREEBSD_URL}
+CACHE_BUST=${CACHE_BUST}
+EXT_CURL_CMD=${EXT_CURL_CMD}
+CROSS_SYSROOT=${CROSS_SYSROOT}"
+
+if [ ! -e FREEBSD.CACHETAG ] || [[ $(< FREEBSD.CACHETAG) != "${CACHE_STR}" ]]; then
+    rm -rf ./*
+
+    $EXT_CURL_CMD "$FREEBSD_URL"base.txz -o base.txz
+    mkdir -p ./freebsd
+    tar -xJf base.txz -C ./freebsd
+
+    echo "${CACHE_STR}" > "FREEBSD.CACHETAG"
+fi
 
 mkdir -p "$CROSS_SYSROOT"/usr
 mkdir -p "$CROSS_SYSROOT"/usr/include
@@ -106,4 +119,3 @@ done
 ln -sf "$CROSS_SYSROOT"/usr/lib/libthr.so.3 "$CROSS_SYSROOT"/usr/lib/libpthread.so
 
 popd
-rm -rf /tmp/freebsd

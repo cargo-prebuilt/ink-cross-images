@@ -9,6 +9,7 @@ FROM ${IMG_BASE}
 # Build CMDS
 ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 ARG TARGETARCH
+ARG CACHE_BUST=cache-v0
 
 # Versioning
 ARG OPENSSL_VERSION=openssl-3.4.0
@@ -36,12 +37,14 @@ COPY ./docker/target/clang/$RUST_TARGET.Dockerfile /ink/dockerfiles
 ENV PATH=$PATH:$CROSS_SYSROOT/usr/bin
 RUN /ink/scripts/target/clang/setup-clang.sh
 
-# Install freebsd
-RUN /ink/scripts/target/bsd/openbsd/extract-openbsd-sysroot.sh
+# Install openbsd
+RUN --mount=type=cache,target="/tmp/${RUST_TARGET}/${TARGETARCH}/openbsd",sharing=locked \
+    /ink/scripts/target/bsd/openbsd/extract-openbsd-sysroot.sh
 
 # Openssl
 ENV OPENSSL_DIR=$CROSS_SYSROOT/usr
-RUN /ink/scripts/target/musl/install-openssl-musl.sh
+RUN --mount=type=cache,target="/tmp/${RUST_TARGET}/${TARGETARCH}/openssl",sharing=locked \
+    /ink/scripts/target/musl/install-openssl-musl.sh
 
 # Install rust target
 ENV RUST_TARGET=$RUST_TARGET

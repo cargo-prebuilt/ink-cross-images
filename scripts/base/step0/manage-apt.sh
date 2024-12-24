@@ -17,6 +17,7 @@ apt install -y --no-install-recommends \
     lsb-release \
     make \
     meson \
+    nano \
     ninja-build \
     perl \
     pkg-config \

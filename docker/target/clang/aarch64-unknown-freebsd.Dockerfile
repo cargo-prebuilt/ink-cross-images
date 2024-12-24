@@ -9,6 +9,7 @@ FROM ${IMG_BASE}
 # Build CMDS
 ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 ARG TARGETARCH
+ARG CACHE_BUST=cache-v0
 
 # Versioning
 ARG OPENSSL_VERSION=openssl-3.4.0
@@ -35,11 +36,13 @@ ENV PATH=$PATH:$CROSS_SYSROOT/usr/bin
 RUN /ink/scripts/target/clang/setup-clang.sh
 
 # Install freebsd
-RUN /ink/scripts/target/bsd/freebsd/extract-freebsd-sysroot.sh
+RUN --mount=type=cache,target="/tmp/${RUST_TARGET}/${TARGETARCH}/freebsd",sharing=locked \
+    /ink/scripts/target/bsd/freebsd/extract-freebsd-sysroot.sh
 
 # Openssl
 ENV OPENSSL_DIR=$CROSS_SYSROOT/usr
-RUN /ink/scripts/target/clang/install-openssl-clang.sh
+RUN --mount=type=cache,target="/tmp/${RUST_TARGET}/${TARGETARCH}/openssl",sharing=locked \
+    /ink/scripts/target/clang/install-openssl-clang.sh
 
 # Install rust target
 ENV RUST_TARGET=$RUST_TARGET
