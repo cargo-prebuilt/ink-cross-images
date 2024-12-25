@@ -3,10 +3,10 @@ name: Build Ink Cross Images
 on:
   push:
     branches: [ main ]
-    paths: [ .github/workflows/ink-cross.yml, cmake/**, docker/**, scripts/**, build-args.sh ]
+    paths: [ .github/workflows/ink-cross.yml, cmake/**, docker/**, scripts/**, build-args.sh, image-tags.sh ]
   pull_request:
     branches: [ main ]
-    paths: [ .github/workflows/ink-cross.yml, cmake/**, docker/**, scripts/**, build-args.sh ]
+    paths: [ .github/workflows/ink-cross.yml, cmake/**, docker/**, scripts/**, build-args.sh, image-tags.sh ]
   workflow_dispatch:
   schedule:
     - cron: '0 6 * * 6'
@@ -55,6 +55,11 @@ jobs:
           LATEST_RUST_VERSION: ${{ needs.vars.outputs.latest-rust-version }}
           LATEST_OPENSSL_VERSION: ${{ needs.vars.outputs.latest-openssl-version }}
         run: ./build-args.sh
+      - name: Generate Image Tags
+        env:
+          STEP: s0
+          IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
+        run: ./image-tags.sh
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -69,6 +74,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker Login
+        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v3
         with:
           registry: quay.io
@@ -86,7 +92,7 @@ jobs:
           push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:base-step0,quay.io/cargo-prebuilt/ink-cross:base-step0
+          tags: ${{ env.IMG_TAGS_PINNED }}
           build-args: |
             CMAKE_VERSION=${{ env.CMAKE_VERSION }}
           labels: |
@@ -124,6 +130,11 @@ jobs:
           LATEST_RUST_VERSION: ${{ needs.vars.outputs.latest-rust-version }}
           LATEST_OPENSSL_VERSION: ${{ needs.vars.outputs.latest-openssl-version }}
         run: ./build-args.sh
+      - name: Generate Image Tags
+        env:
+          STEP: s1
+          IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
+        run: ./image-tags.sh
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -138,6 +149,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker Login
+        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v3
         with:
           registry: quay.io
@@ -155,9 +167,9 @@ jobs:
           push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:base-step1-${{ env.RUST_VERSION }},quay.io/cargo-prebuilt/ink-cross:base-step1-${{ env.RUST_VERSION }}
+          tags: ${{ env.IMG_TAGS_PINNED }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step0.outputs.digest }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step0.outputs.digest }}
             RUST_VERSION=${{ env.RUST_VERSION }}
           labels: |
             tech.harmless.ink-cross.target="base/step1/${{ env.RUST_VERSION }}"
@@ -182,9 +194,9 @@ jobs:
           push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:base-step1-stable,quay.io/cargo-prebuilt/ink-cross:base-step1-stable
+          tags: ${{ env.IMG_TAGS_STABLE }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step0.outputs.digest }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step0.outputs.digest }}
             RUST_VERSION=stable
           labels: |
             tech.harmless.ink-cross.target="base/step1/stable"
@@ -209,9 +221,9 @@ jobs:
           push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:base-step1-beta,quay.io/cargo-prebuilt/ink-cross:base-step1-beta
+          tags: ${{ env.IMG_TAGS_BETA }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step0.outputs.digest }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step0.outputs.digest }}
             RUST_VERSION=beta
           labels: |
             tech.harmless.ink-cross.target="base/step1/beta"
@@ -236,9 +248,9 @@ jobs:
           push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:base-step1-nightly,quay.io/cargo-prebuilt/ink-cross:base-step1-nightly
+          tags: ${{ env.IMG_TAGS_NIGHTLY }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step0.outputs.digest }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step0.outputs.digest }}
             RUST_VERSION=nightly
           labels: |
             tech.harmless.ink-cross.target="base/step1/nightly"
@@ -275,6 +287,11 @@ jobs:
           LATEST_RUST_VERSION: ${{ needs.vars.outputs.latest-rust-version }}
           LATEST_OPENSSL_VERSION: ${{ needs.vars.outputs.latest-openssl-version }}
         run: ./build-args.sh
+      - name: Generate Image Tags
+        env:
+          STEP: s2-clang
+          IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
+        run: ./image-tags.sh
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -289,6 +306,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker Login
+        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v3
         with:
           registry: quay.io
@@ -306,9 +324,9 @@ jobs:
           push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:base-step2-clang-${{ env.RUST_VERSION }},quay.io/cargo-prebuilt/ink-cross:base-step2-clang-${{ env.RUST_VERSION }}
+          tags: ${{ env.IMG_TAGS_PINNED }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step1.outputs.digest-pinned }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step1.outputs.digest-pinned }}
             LLVM_VERSION=${{ env.LLVM_VERSION }}
           labels: |
             tech.harmless.ink-cross.target="base/step2-clang/${{ env.LLVM_VERSION }}"
@@ -333,9 +351,9 @@ jobs:
           push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:base-step2-clang-stable,quay.io/cargo-prebuilt/ink-cross:base-step2-clang-stable
+          tags: ${{ env.IMG_TAGS_STABLE }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step1.outputs.digest-stable }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step1.outputs.digest-stable }}
             LLVM_VERSION=${{ env.LLVM_VERSION }}
           labels: |
             tech.harmless.ink-cross.target="base/step2-clang/${{ env.LLVM_VERSION }}"
@@ -360,9 +378,9 @@ jobs:
           push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:base-step2-clang-beta,quay.io/cargo-prebuilt/ink-cross:base-step2-clang-beta
+          tags: ${{ env.IMG_TAGS_BETA }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step1.outputs.digest-beta }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step1.outputs.digest-beta }}
             LLVM_VERSION=${{ env.LLVM_VERSION }}
           labels: |
             tech.harmless.ink-cross.target="base/step2-clang/${{ env.LLVM_VERSION }}"
@@ -387,9 +405,9 @@ jobs:
           push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:base-step2-clang-nightly,quay.io/cargo-prebuilt/ink-cross:base-step2-clang-nightly
+          tags: ${{ env.IMG_TAGS_NIGHTLY }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step1.outputs.digest-nightly }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step1.outputs.digest-nightly }}
             LLVM_VERSION=${{ env.LLVM_VERSION }}
           labels: |
             tech.harmless.ink-cross.target="base/step2-clang/${{ env.LLVM_VERSION }}"
@@ -441,6 +459,12 @@ jobs:
           LATEST_RUST_VERSION: ${{ needs.vars.outputs.latest-rust-version }}
           LATEST_OPENSSL_VERSION: ${{ needs.vars.outputs.latest-openssl-version }}
         run: ./build-args.sh
+      - name: Generate Image Tags
+        env:
+          STEP: target
+          IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
+          TARGET: ${{ matrix.target }}
+        run: ./image-tags.sh
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -449,7 +473,6 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v3
       - name: Docker Login
-        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -471,12 +494,12 @@ jobs:
           no-cache: true
           cache-to: type=inline
           pull: true
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:${{ env.RUST_VERSION }}-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:${{ env.RUST_VERSION }}-${{ matrix.target }}
+          tags: ${{ env.IMG_TAGS_PINNED }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step1.outputs.digest-pinned }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step1.outputs.digest-pinned }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
@@ -504,12 +527,12 @@ jobs:
           file: ./docker/target/gnu/${{ matrix.target }}.Dockerfile
           cache-from: type=inline
           pull: true
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:stable-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:stable-${{ matrix.target }}
+          tags: ${{ env.IMG_TAGS_STABLE }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step1.outputs.digest-stable }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step1.outputs.digest-stable }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
@@ -537,12 +560,12 @@ jobs:
           file: ./docker/target/gnu/${{ matrix.target }}.Dockerfile
           cache-from: type=inline
           pull: true
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:beta-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:beta-${{ matrix.target }}
+          tags: ${{ env.IMG_TAGS_BETA }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step1.outputs.digest-beta }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step1.outputs.digest-beta }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
@@ -569,12 +592,12 @@ jobs:
           file: ./docker/target/gnu/${{ matrix.target }}.Dockerfile
           cache-from: type=inline
           pull: true
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }}
+          tags: ${{ env.IMG_TAGS_NIGHTLY }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step1.outputs.digest-nightly }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step1.outputs.digest-nightly }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
@@ -633,6 +656,12 @@ jobs:
           LATEST_RUST_VERSION: ${{ needs.vars.outputs.latest-rust-version }}
           LATEST_OPENSSL_VERSION: ${{ needs.vars.outputs.latest-openssl-version }}
         run: ./build-args.sh
+      - name: Generate Image Tags
+        env:
+          STEP: target
+          IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
+          TARGET: ${{ matrix.target }}
+        run: ./image-tags.sh
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -641,7 +670,6 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v3
       - name: Docker Login
-        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -663,12 +691,12 @@ jobs:
           no-cache: true
           cache-to: type=inline
           pull: true
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:${{ env.RUST_VERSION }}-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:${{ env.RUST_VERSION }}-${{ matrix.target }}
+          tags: ${{ env.IMG_TAGS_PINNED }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step2-clang.outputs.digest-pinned }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step2-clang.outputs.digest-pinned }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
@@ -696,12 +724,12 @@ jobs:
           file: ./docker/target/clang/${{ matrix.target }}.Dockerfile
           cache-from: type=inline
           pull: true
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:stable-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:stable-${{ matrix.target }}
+          tags: ${{ env.IMG_TAGS_STABLE }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step2-clang.outputs.digest-stable }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step2-clang.outputs.digest-stable }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
@@ -729,12 +757,12 @@ jobs:
           file: ./docker/target/clang/${{ matrix.target }}.Dockerfile
           cache-from: type=inline
           pull: true
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:beta-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:beta-${{ matrix.target }}
+          tags: ${{ env.IMG_TAGS_BETA }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step2-clang.outputs.digest-beta }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step2-clang.outputs.digest-beta }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
@@ -761,12 +789,12 @@ jobs:
           file: ./docker/target/clang/${{ matrix.target }}.Dockerfile
           cache-from: type=inline
           pull: true
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           provenance: mode=max
           sbom: true
-          tags: ghcr.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }},quay.io/cargo-prebuilt/ink-cross:nightly-${{ matrix.target }}
+          tags: ${{ env.IMG_TAGS_NIGHTLY }}
           build-args: |
-            IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross@${{ needs.ink-cross-step2-clang.outputs.digest-nightly }}
+            IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step2-clang.outputs.digest-nightly }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
