@@ -85,6 +85,8 @@ if [ ! -e NETBSD.CACHETAG ] || [[ $(< NETBSD.CACHETAG) != "${CACHE_STR}" ]]; the
     $EXT_CURL_CMD "$NETBSD_URL"comp.tar.xz -o comp.tar.xz
     tar -xJf comp.tar.xz -C ./netbsd
 
+    rm -f base.tar.xz comp.tar.xz
+
     echo "${CACHE_STR}" > "NETBSD.CACHETAG"
 fi
 

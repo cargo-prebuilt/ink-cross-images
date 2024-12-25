@@ -82,6 +82,8 @@ if [ ! -e FREEBSD.CACHETAG ] || [[ $(< FREEBSD.CACHETAG) != "${CACHE_STR}" ]]; t
     mkdir -p ./freebsd
     tar -xJf base.txz -C ./freebsd
 
+    rm -f base.txz
+
     echo "${CACHE_STR}" > "FREEBSD.CACHETAG"
 fi
 

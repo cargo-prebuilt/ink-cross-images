@@ -89,6 +89,8 @@ if [ ! -e OPENBSD.CACHETAG ] || [[ $(< OPENBSD.CACHETAG) != "${CACHE_STR}" ]]; t
     mkdir -p ./openbsd
     tar -xzvf comp.tgz -C ./openbsd
 
+    rm -f base.tgz comp.tgz
+
     echo "${CACHE_STR}" > "OPENBSD.CACHETAG"
 fi
 
