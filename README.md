@@ -11,6 +11,14 @@ Built for x86_64 (amd64) and aarch64 (arm64) platforms.
 - From GitHub `docker pull ghcr.io/cargo-prebuilt/ink-cross:$DIST-$TARGET`
 - From Quay `docker pull quay.io/cargo-prebuilt/ink-cross:$DIST-$TARGET`
 
+### Dev Images
+
+> [!WARNING]
+> Dev images are only hosted on GitHub and are built in pull requests.
+> They are not rebuilt weekly and are not meant for general use.
+
+`docker pull ghcr.io/cargo-prebuilt/ink-cross-dev:$DIST-$TARGET`
+
 ## Using
 
 Debug Build:
@@ -34,13 +42,28 @@ docker run --rm \
     auditable build --verbose --release --locked
 ```
 
+*`--userns host --user "$(id -u):$(id -g)"` may or may not be needed.*
+
 ## Dists
 
 There are 4 dists:
-- Pinned: $VERSION-$TARGET (Only the latest rust version gets an updated image weekly)
+- Pinned: $VERSION-$TARGET
+
+  *(ENTRYPOINT runs `cargo +$VERSION $@`)*
+
+  (Only the latest rust version gets an updated image weekly)
+
 - Stable: stable-$TARGET
+
+  *(ENTRYPOINT runs `cargo +stable $@`)*
+
 - Beta: beta-$TARGET
+
+  *(ENTRYPOINT runs `cargo +beta $@`)*
+
 - Nightly: nightly-$TARGET
+
+  *(ENTRYPOINT runs `cargo +nightly $@`)*
 
 ## Targets
 
@@ -53,7 +76,35 @@ Info:
 - nightly-only - Only builds and ships a nightly rust image.
   (Also is probably a [tier 3 rust target](https://doc.rust-lang.org/nightly/rustc/platform-support.html))
 
-Targets:
+### Clang Targets
+
+Use Clang as their cross compiler and linker.
+Libs are under `/usr/$CROSS_TOOLCHAIN/usr/{include,lib}`.
+
+- aarch64-unknown-freebsd (bleeding, nightly-only)
+- aarch64-unknown-linux-musl
+- armv7-unknown-linux-musleabihf
+- x86_64-unknown-freebsd
+- x86_64-unknown-linux-musl
+- x86_64-unknown-netbsd
+- x86_64-unknown-openbsd (bleeding, nightly-only)
+
+### GNU Targets
+
+Use GCC as their cross compiler and linker.
+Libs are under `/usr/$CROSS_TOOLCHAIN/{include,lib}`.
+
+- aarch64-unknown-linux-gnu
+- armv7-unknown-linux-gnueabihf
+- powerpc64-unknown-linux-gnu (bleeding, amd64)
+- powerpc64le-unknown-linux-gnu
+- riscv64gc-unknown-linux-gnu
+- s390x-unknown-linux-gnu
+- sparc64-unknown-linux-gnu (bleeding, amd64)
+- x86_64-unknown-linux-gnu
+
+### All Targets
+
 - aarch64-unknown-freebsd (bleeding, nightly-only)
 - aarch64-unknown-linux-gnu
 - aarch64-unknown-linux-musl
@@ -67,20 +118,13 @@ Targets:
 - x86_64-unknown-freebsd
 - x86_64-unknown-linux-gnu
 - x86_64-unknown-linux-musl
-- x86_64-unknown-netbsd (bleeding)
+- x86_64-unknown-netbsd
 - x86_64-unknown-openbsd (bleeding, nightly-only)
-
-## Differences between images
-
-- GNU images use gcc.
-  All other images use clang.
-- GNU images are /usr/$CROSS_TOOLCHAIN/{include,lib}.
-  All others are /usr/$CROSS_TOOLCHAIN/usr/{include,lib}.
 
 ## Auditing
 
-All scripts + the dockerfile are included under `/ink` in the image.
+All scripts + the dockerfile are included under `/ink` directory in the image.
 
 ## Acknowledgments
 
-- [cross-rs](https://github.com/cross-rs/cross)
+- Uses some scripts from [cross-rs](https://github.com/cross-rs/cross)
