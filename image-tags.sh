@@ -53,8 +53,8 @@ target)
     {
         echo "IMG_TAGS_PINNED=$(gen_tags "${RUST_VERSION}-${TARGET}")"
         echo "IMG_TAGS_STABLE=$(gen_tags "stable-${TARGET}")"
-        echo "IMG_TAGS_BETA=$(gen_tags "stable-${TARGET}")"
-        echo "IMG_TAGS_NIGHTLY=$(gen_tags "stable-${TARGET}")"
+        echo "IMG_TAGS_BETA=$(gen_tags "beta-${TARGET}")"
+        echo "IMG_TAGS_NIGHTLY=$(gen_tags "nightly-${TARGET}")"
     } >> "$GITHUB_ENV"
     ;;
 *)
