@@ -48,7 +48,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Free up space
-        run: bash -c "$(curl -fsSL --tlsv1.2 https://raw.githubusercontent.com/apache/arrow/e7471f85b45a0f547bf5395bd98f8d6d8aa0af78/ci/scripts/util_free_space.sh)"
+        run: ./ci/scripts/util_free_space.sh
       - name: Vars
         env:
           BUILD_DATE: ${{ needs.vars.outputs.build-date }}
@@ -123,7 +123,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Free up space
-        run: bash -c "$(curl -fsSL --tlsv1.2 https://raw.githubusercontent.com/apache/arrow/e7471f85b45a0f547bf5395bd98f8d6d8aa0af78/ci/scripts/util_free_space.sh)"
+        run: ./ci/scripts/util_free_space.sh
       - name: Vars
         env:
           BUILD_DATE: ${{ needs.vars.outputs.build-date }}
@@ -280,7 +280,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Free up space
-        run: bash -c "$(curl -fsSL --tlsv1.2 https://raw.githubusercontent.com/apache/arrow/e7471f85b45a0f547bf5395bd98f8d6d8aa0af78/ci/scripts/util_free_space.sh)"
+        run: ./ci/scripts/util_free_space.sh
       - name: Vars
         env:
           BUILD_DATE: ${{ needs.vars.outputs.build-date }}
@@ -452,7 +452,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Free up space
-        run: bash -c "$(curl -fsSL --tlsv1.2 https://raw.githubusercontent.com/apache/arrow/e7471f85b45a0f547bf5395bd98f8d6d8aa0af78/ci/scripts/util_free_space.sh)"
+        run: ./ci/scripts/util_free_space.sh
       - name: Vars
         env:
           BUILD_DATE: ${{ needs.vars.outputs.build-date }}
@@ -649,7 +649,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Free up space
-        run: bash -c "$(curl -fsSL --tlsv1.2 https://raw.githubusercontent.com/apache/arrow/e7471f85b45a0f547bf5395bd98f8d6d8aa0af78/ci/scripts/util_free_space.sh)"
+        run: ./ci/scripts/util_free_space.sh
       - name: Vars
         env:
           BUILD_DATE: ${{ needs.vars.outputs.build-date }}
