@@ -103,6 +103,15 @@ Libs are under `/usr/$CROSS_TOOLCHAIN/{include,lib}`.
 - sparc64-unknown-linux-gnu (bleeding, amd64)
 - x86_64-unknown-linux-gnu
 
+### Native
+
+The native target is special. It contains everything except for the cross-compiling parts.
+
+It also is not the same rust target/toolchain across platforms unlike other images.
+
+- linux/amd64 - x86_64-unknown-linux-gnu
+- linux/arm64 - aarch64-unknown-linux-gnu
+
 ### All Targets
 
 - aarch64-unknown-freebsd (bleeding, nightly-only)

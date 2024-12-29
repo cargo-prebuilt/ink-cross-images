@@ -430,6 +430,8 @@ jobs:
             platforms: linux/amd64,linux/arm64
           - target: armv7-unknown-linux-gnueabihf
             platforms: linux/amd64,linux/arm64
+          - target: native
+            platforms: linux/amd64,linux/arm64
           - target: powerpc64-unknown-linux-gnu
             platforms: linux/amd64
           - target: powerpc64le-unknown-linux-gnu
