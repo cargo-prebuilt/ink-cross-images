@@ -20,7 +20,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 
 # Copy required scripts and Dockerfile
 COPY ./scripts/base/step0 /ink/scripts/base/step0
-COPY ./docker/base/step0.Dockerfile /ink/dockerfiles
+COPY ./docker/base/step0.Dockerfile /ink/dockerfiles/
 
 # Upgrade and install apt packages
 RUN /ink/scripts/base/step0/manage-apt.sh

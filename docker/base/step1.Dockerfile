@@ -12,7 +12,7 @@ ENV RUST_VERSION=${RUST_VERSION}
 
 # Copy required scripts and Dockerfile
 COPY ./scripts/base/step1 /ink/scripts/base/step1
-COPY ./docker/base/step1.Dockerfile /ink/dockerfiles
+COPY ./docker/base/step1.Dockerfile /ink/dockerfiles/
 
 # Install rust toolchain
 RUN /ink/scripts/base/step1/install-rustup.sh

@@ -22,7 +22,7 @@ ARG GCC_PKGS="g++-arm-linux-gnueabihf libc6-dev-armhf-cross"
 
 # Copy required scripts and Dockerfile
 COPY ./scripts/target/gnu /ink/scripts/target/gnu
-COPY ./docker/target/gnu/$RUST_TARGET.Dockerfile /ink/dockerfiles
+COPY ./docker/target/gnu/$RUST_TARGET.Dockerfile /ink/dockerfiles/
 
 # Install gcc packages
 RUN /ink/scripts/target/gnu/manage-apt.sh

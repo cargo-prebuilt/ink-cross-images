@@ -25,7 +25,7 @@ ARG LLVM_TARGET=$RUST_TARGET
 # Copy required scripts and Dockerfile
 COPY ./scripts/target/clang /ink/scripts/target/clang
 COPY ./scripts/target/bsd/netbsd /ink/scripts/target/bsd/netbsd
-COPY ./docker/target/clang/$RUST_TARGET.Dockerfile /ink/dockerfiles
+COPY ./docker/target/clang/$RUST_TARGET.Dockerfile /ink/dockerfiles/
 
 # Setup clang
 ENV PATH=$PATH:$CROSS_SYSROOT/usr/bin

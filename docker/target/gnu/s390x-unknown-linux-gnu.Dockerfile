@@ -22,7 +22,7 @@ ARG GCC_PKGS="g++-s390x-linux-gnu libc6-dev-s390x-cross"
 
 # Copy required scripts and Dockerfile
 COPY ./scripts/target/gnu /ink/scripts/target/gnu
-COPY ./docker/target/gnu/$RUST_TARGET.Dockerfile /ink/dockerfiles
+COPY ./docker/target/gnu/$RUST_TARGET.Dockerfile /ink/dockerfiles/
 
 # Install gcc packages
 RUN /ink/scripts/target/gnu/manage-apt.sh

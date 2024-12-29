@@ -39,7 +39,7 @@ ARG LLVM_TARGET=$RUST_TARGET
 # Copy required scripts and Dockerfile
 COPY ./scripts/target/clang /ink/scripts/target/clang
 COPY ./scripts/target/musl /ink/scripts/target/musl
-COPY ./docker/target/clang/$RUST_TARGET.Dockerfile /ink/dockerfiles
+COPY ./docker/target/clang/$RUST_TARGET.Dockerfile /ink/dockerfiles/
 
 # Install sysroot (musl + libstdc++ + libgcc)
 COPY --from=rooter /opt/export $CROSS_SYSROOT/usr
