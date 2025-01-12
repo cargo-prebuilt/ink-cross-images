@@ -19,6 +19,10 @@ Built for x86_64 (amd64) and aarch64 (arm64) platforms.
 
 `docker pull ghcr.io/cargo-prebuilt/ink-cross-dev:$DIST-$TARGET`
 
+## Building
+
+See [BUILDING](BUILDING.md)
+
 ## Using
 
 Debug Build:
@@ -42,34 +46,36 @@ docker run --rm \
     auditable build --verbose --release --locked
 ```
 
-*`--userns host --user "$(id -u):$(id -g)"` may or may not be needed.*
+_`--userns host --user "$(id -u):$(id -g)"` may or may not be needed._
 
 ## Dists
 
 There are 4 dists:
+
 - Pinned: $VERSION-$TARGET
 
-  *(ENTRYPOINT runs `cargo +$VERSION $@`)*
+  _(ENTRYPOINT runs `cargo +$VERSION $@`)_
 
   (Only the latest rust version gets an updated image weekly)
 
 - Stable: stable-$TARGET
 
-  *(ENTRYPOINT runs `cargo +stable $@`)*
+  _(ENTRYPOINT runs `cargo +stable $@`)_
 
 - Beta: beta-$TARGET
 
-  *(ENTRYPOINT runs `cargo +beta $@`)*
+  _(ENTRYPOINT runs `cargo +beta $@`)_
 
 - Nightly: nightly-$TARGET
 
-  *(ENTRYPOINT runs `cargo +nightly $@`)*
+  _(ENTRYPOINT runs `cargo +nightly $@`)_
 
 ## Targets
 
 Only rust targets that have host tools can be built.
 
 Info:
+
 - experimental - Has not been extensively tested.
 - bleeding - Has barely been tested.
 - amd64 - Only available on amd64 platforms.
