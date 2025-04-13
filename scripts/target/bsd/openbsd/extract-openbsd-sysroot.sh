@@ -66,9 +66,10 @@ pushd "/tmp/${RUST_TARGET}/${TARGETARCH}/openbsd"
 
 # Bypass openbsd cdn listing a release that is not out. (#36)
 OPENBSD_VERSION="$OPENBSD_MAJOR"
-#OPENBSD_VERSION="$(latest_openbsd 'https://cdn.openbsd.org/pub/OpenBSD')"
+#OPENBSD_VERSION="$(latest_openbsd 'https://cloudflare.cdn.openbsd.org/pub/OpenBSD')"
 
-OPENBSD_URL="https://cdn.openbsd.org/pub/OpenBSD/$OPENBSD_VERSION/$OPENBSD_ARCH/"
+#OPENBSD_URL="https://cloudflare.cdn.openbsd.org/pub/OpenBSD/$OPENBSD_VERSION/$OPENBSD_ARCH/"
+OPENBSD_URL="https://github.com/cargo-prebuilt/ink-cross-images/releases/download/openbsd-files/"
 
 # Cache String
 CACHE_STR="/tmp/${RUST_TARGET}/${TARGETARCH}/openbsd/OPENBSD.CACHETAG
@@ -81,11 +82,11 @@ CROSS_SYSROOT=${CROSS_SYSROOT}"
 if [ ! -e OPENBSD.CACHETAG ] || [[ $(< OPENBSD.CACHETAG) != "${CACHE_STR}" ]]; then
     rm -rf ./*
 
-    $EXT_CURL_CMD "$OPENBSD_URL"base"${OPENBSD_VERSION//.}".tgz -o base.tgz
+    $EXT_CURL_CMD "${OPENBSD_URL}"base-"${OPENBSD_VERSION//.}"-"${OPENBSD_ARCH}".tgz -o base.tgz
     mkdir -p ./openbsd
     tar -xzf base.tgz -C ./openbsd
 
-    $EXT_CURL_CMD "$OPENBSD_URL"comp"${OPENBSD_VERSION//.}".tgz -o comp.tgz
+    $EXT_CURL_CMD "${OPENBSD_URL}"comp-"${OPENBSD_VERSION//.}"-"${OPENBSD_ARCH}".tgz -o comp.tgz
     mkdir -p ./openbsd
     tar -xzvf comp.tgz -C ./openbsd
 

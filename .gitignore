@@ -4,5 +4,7 @@
 
 *.tmp
 *.log
+/tmp
+/temp
 
 .DS_Store
