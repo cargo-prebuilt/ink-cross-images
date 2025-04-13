@@ -3,8 +3,8 @@
 set -euxo pipefail
 
 {
-	echo "CMAKE_VERSION=3.31.2"
-	#echo "OPENSSL_VERSION=openssl-3.4.0"
+	echo "CMAKE_VERSION=3.31.7"
+	#echo "OPENSSL_VERSION=openssl-3.5.0"
 	echo "LLVM_VERSION=19"
 	echo "MUSL_VERSION=1.2.5"
 	echo "FREEBSD_MAJOR=13"

@@ -90,6 +90,7 @@ Libs are under `/usr/$CROSS_TOOLCHAIN/usr/{include,lib}`.
 - aarch64-unknown-freebsd (bleeding, nightly-only)
 - aarch64-unknown-linux-musl
 - armv7-unknown-linux-musleabihf
+- riscv64gc-unknown-linux-musl (experimental)
 - x86_64-unknown-freebsd
 - x86_64-unknown-linux-musl
 - x86_64-unknown-netbsd
