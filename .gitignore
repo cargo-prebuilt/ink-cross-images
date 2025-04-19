@@ -2,7 +2,10 @@
 /.idea
 /.vscode
 
+/tmp
+/temp
 *.tmp
+*.temp
 *.log
 
 .DS_Store

@@ -5,7 +5,7 @@ set -euxo pipefail
 {
 	echo "CMAKE_VERSION=3.31.7"
 	#echo "OPENSSL_VERSION=openssl-3.5.0"
-	echo "LLVM_VERSION=19"
+	echo "LLVM_VERSION=20"
 	echo "MUSL_VERSION=1.2.5"
 	echo "FREEBSD_MAJOR=13"
 	echo "NETBSD_MAJOR=10"
