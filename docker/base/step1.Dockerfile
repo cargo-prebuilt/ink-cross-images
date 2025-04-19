@@ -6,21 +6,18 @@ FROM ${IMG_BASE}
 ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 ARG TARGETARCH
 
-# Versioning
-ARG LLVM_VERSION=20
-ENV LLVM_VERSION=${LLVM_VERSION}
-
-ARG RUST_VERSION=stable
-ENV RUST_VERSION=${RUST_VERSION}
-
 # Copy required scripts and Dockerfile
 COPY ./scripts/base/step1 /ink/scripts/base/step1
 COPY ./docker/base/step1.Dockerfile /ink/dockerfiles/
 
 # Install libclang
+ARG LLVM_VERSION=20
+ENV LLVM_VERSION=${LLVM_VERSION}
 RUN /ink/scripts/base/step1/install-libclang.sh
 
 # Install rust toolchain
+ARG RUST_VERSION=stable
+ENV RUST_VERSION=${RUST_VERSION}
 RUN /ink/scripts/base/step1/install-rustup.sh
 
 # Create Entrypoint
