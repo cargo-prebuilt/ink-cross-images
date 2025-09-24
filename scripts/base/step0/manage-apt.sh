@@ -12,6 +12,7 @@ apt install -y --no-install-recommends \
     curl \
     flex \
     git \
+    libffi-dev \
     libtool \
     libtool-bin \
     lsb-release \
@@ -24,4 +25,5 @@ apt install -y --no-install-recommends \
     texinfo \
     xz-utils
 
+apt autoremove -y
 rm -rf /var/lib/apt/lists/*

@@ -10,9 +10,12 @@ ARG TARGETARCH
 COPY ./scripts/base/step1 /ink/scripts/base/step1
 COPY ./docker/base/step1.Dockerfile /ink/dockerfiles/
 
-# Install libclang
+# Install LLVM repo
 ARG LLVM_VERSION=20
 ENV LLVM_VERSION=${LLVM_VERSION}
+RUN /ink/scripts/base/step1/setup-llvm-repo.sh
+
+# Install libclang
 RUN /ink/scripts/base/step1/install-libclang.sh
 
 # Install rust toolchain

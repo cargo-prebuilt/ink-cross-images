@@ -24,7 +24,7 @@ ARG TARGETARCH
 ARG CACHE_BUST=cache-v0
 
 # Versioning
-ARG OPENSSL_VERSION=openssl-3.5.0
+ARG OPENSSL_VERSION=openssl-3.5.3
 
 ARG RUST_TARGET=aarch64-unknown-linux-musl
 
