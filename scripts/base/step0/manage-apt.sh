@@ -12,6 +12,7 @@ apt install -y --no-install-recommends \
     curl \
     flex \
     git \
+    libffi-dev \
     libtool \
     libtool-bin \
     lsb-release \
