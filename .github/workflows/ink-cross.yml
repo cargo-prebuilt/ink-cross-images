@@ -9,7 +9,11 @@ on:
     paths: [ .github/workflows/ink-cross.yml, cmake/**, docker/**, scripts/**, build-args.sh, image-tags.sh ]
   workflow_dispatch:
   schedule:
-    - cron: '0 6 * * 6'
+    - cron: '0 6 * * 6' # 6 UTC on Sat
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions: { }
 
