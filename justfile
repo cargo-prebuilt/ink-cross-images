@@ -1,12 +1,15 @@
-platforms := 'linux/arm64'
+platforms := 'linux/arm64,linux/amd64'
 rust_version := 'stable'
 output := 'type=image,compression=zstd,compression-level=10'
+
+builder := 'docker buildx build'
+#builder := 'nerdctl build'
 
 default:
     just -l
 
 step0:
-    docker buildx build \
+    {{ builder }} \
         --platform={{ platforms }} \
         --output {{ output }} \
         -t ink:step0 \
@@ -14,7 +17,7 @@ step0:
         .
 
 step1: step0
-    docker buildx build \
+    {{ builder }} \
         --platform={{ platforms }} \
         --output {{ output }} \
         -t ink:step1-{{ rust_version }} \
@@ -24,7 +27,7 @@ step1: step0
         .
 
 step2-clang: step1
-    docker buildx build \
+    {{ builder }} \
         --platform={{ platforms }} \
         --output {{ output }} \
         -t ink:step2-clang-{{ rust_version }} \
@@ -33,7 +36,7 @@ step2-clang: step1
         .
 
 target-gnu TARGET: step1
-    docker buildx build \
+    {{ builder }} \
         --platform={{ platforms }} \
         --output {{ output }} \
         -t ink:{{ rust_version }}-{{ TARGET }} \
@@ -42,7 +45,7 @@ target-gnu TARGET: step1
         .
 
 target-clang TARGET: step2-clang
-    docker buildx build \
+    {{ builder }} \
         --platform={{ platforms }} \
         --output {{ output }} \
         -t ink:{{ rust_version }}-{{ TARGET }} \

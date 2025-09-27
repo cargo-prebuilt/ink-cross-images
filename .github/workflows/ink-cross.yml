@@ -46,7 +46,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: archive/vars
           persist-credentials: false
@@ -83,7 +83,7 @@ jobs:
     outputs:
       digest: ${{ steps.step0.outputs.digest }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - name: Free up space
@@ -159,7 +159,7 @@ jobs:
       digest-beta: ${{ steps.step1-beta.outputs.digest }}
       digest-nightly: ${{ steps.step1-nightly.outputs.digest }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - name: Free up space
@@ -317,7 +317,7 @@ jobs:
       digest-beta: ${{ steps.step2-beta.outputs.digest }}
       digest-nightly: ${{ steps.step2-nightly.outputs.digest }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - name: Free up space
@@ -495,7 +495,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - name: Free up space
@@ -698,7 +698,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - name: Free up space
