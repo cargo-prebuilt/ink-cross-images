@@ -24,7 +24,7 @@ Simply run `just target-gnu $TARGET`.
 
 ### Platform
 
-By default images are built for the `linux/arm64` platform, to build for another (or more) platform do
+By default images are built for the `linux/arm64,linux/amd64` platform, to build for another (or more) platform do
 
 - `just --set platforms linux/$PLATFORM target-$GorC $TARGET`
 

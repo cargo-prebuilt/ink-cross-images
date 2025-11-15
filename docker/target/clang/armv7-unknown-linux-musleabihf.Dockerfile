@@ -24,7 +24,7 @@ ARG TARGETARCH
 ARG CACHE_BUST=cache-v0
 
 # Versioning
-ARG OPENSSL_VERSION=openssl-3.5.3
+ARG OPENSSL_VERSION=openssl-3.6.0
 
 ARG RUST_TARGET=armv7-unknown-linux-musleabihf
 
