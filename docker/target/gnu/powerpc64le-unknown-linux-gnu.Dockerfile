@@ -8,7 +8,7 @@ ARG TARGETARCH
 ARG CACHE_BUST=cache-v0
 
 # Versioning
-ARG OPENSSL_VERSION=openssl-3.5.3
+ARG OPENSSL_VERSION=openssl-3.6.0
 
 ARG RUST_TARGET=powerpc64le-unknown-linux-gnu
 
