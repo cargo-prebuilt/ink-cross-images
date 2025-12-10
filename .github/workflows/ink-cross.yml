@@ -548,6 +548,7 @@ jobs:
             IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step1.outputs.digest-pinned }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
             NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
             OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
@@ -561,6 +562,7 @@ jobs:
             tech.harmless.ink-cross.version.cmake="${{ env.CMAKE_VERSION }}"
             tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
+            tech.harmless.ink-cross.version.alpine-extract="${{ env.ALPINE_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
             org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
           platforms: ${{ matrix.platforms }}
@@ -582,6 +584,7 @@ jobs:
             IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step1.outputs.digest-stable }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
             NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
             OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
@@ -595,6 +598,7 @@ jobs:
             tech.harmless.ink-cross.version.cmake="${{ env.CMAKE_VERSION }}"
             tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
+            tech.harmless.ink-cross.version.alpine-extract="${{ env.ALPINE_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
             org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
           platforms: ${{ matrix.platforms }}
@@ -616,6 +620,7 @@ jobs:
             IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step1.outputs.digest-beta }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
             NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
             OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
@@ -629,6 +634,7 @@ jobs:
             tech.harmless.ink-cross.version.cmake="${{ env.CMAKE_VERSION }}"
             tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
+            tech.harmless.ink-cross.version.alpine-extract="${{ env.ALPINE_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
             org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
           platforms: ${{ matrix.platforms }}
@@ -649,6 +655,7 @@ jobs:
             IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step1.outputs.digest-nightly }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
             NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
             OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
@@ -662,6 +669,7 @@ jobs:
             tech.harmless.ink-cross.version.cmake="${{ env.CMAKE_VERSION }}"
             tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
+            tech.harmless.ink-cross.version.alpine-extract="${{ env.ALPINE_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
             org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
           platforms: ${{ matrix.platforms }}
@@ -751,6 +759,7 @@ jobs:
             IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step2-clang.outputs.digest-pinned }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
             NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
             OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
@@ -764,6 +773,7 @@ jobs:
             tech.harmless.ink-cross.version.cmake="${{ env.CMAKE_VERSION }}"
             tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
+            tech.harmless.ink-cross.version.alpine-extract="${{ env.ALPINE_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
             org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
           platforms: ${{ matrix.platforms }}
@@ -785,6 +795,7 @@ jobs:
             IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step2-clang.outputs.digest-stable }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
             NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
             OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
@@ -798,6 +809,7 @@ jobs:
             tech.harmless.ink-cross.version.cmake="${{ env.CMAKE_VERSION }}"
             tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
+            tech.harmless.ink-cross.version.alpine-extract="${{ env.ALPINE_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
             org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
           platforms: ${{ matrix.platforms }}
@@ -819,6 +831,7 @@ jobs:
             IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step2-clang.outputs.digest-beta }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
             NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
             OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
@@ -832,6 +845,7 @@ jobs:
             tech.harmless.ink-cross.version.cmake="${{ env.CMAKE_VERSION }}"
             tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
+            tech.harmless.ink-cross.version.alpine-extract="${{ env.ALPINE_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
             org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
           platforms: ${{ matrix.platforms }}
@@ -852,6 +866,7 @@ jobs:
             IMG_BASE=${{ env.IMG_REPO }}@${{ needs.ink-cross-step2-clang.outputs.digest-nightly }}
             OPENSSL_VERSION=${{ env.OPENSSL_VERSION }}
             MUSL_VERSION=${{ env.MUSL_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
             FREEBSD_MAJOR=${{ env.FREEBSD_MAJOR }}
             NETBSD_MAJOR=${{ env.NETBSD_MAJOR }}
             OPENBSD_MAJOR=${{ env.OPENBSD_MAJOR }}
@@ -865,6 +880,7 @@ jobs:
             tech.harmless.ink-cross.version.cmake="${{ env.CMAKE_VERSION }}"
             tech.harmless.ink-cross.version.openssl="${{ env.OPENSSL_VERSION }}"
             tech.harmless.ink-cross.version.llvm="${{ env.LLVM_VERSION }}"
+            tech.harmless.ink-cross.version.alpine-extract="${{ env.ALPINE_VERSION }}"
             org.opencontainers.image.authors="harmless-tech, cargo-prebuilt"
             org.opencontainers.image.source = "${{ github.server_url }}/${{ github.repository }}"
           platforms: ${{ matrix.platforms }}

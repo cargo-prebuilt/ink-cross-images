@@ -7,6 +7,7 @@ set -euxo pipefail
 	#echo "OPENSSL_VERSION=openssl-3.5.0"
 	echo "LLVM_VERSION=21"
 	echo "MUSL_VERSION=1.2.5"
+	echo "ALPINE_VERSION=3.22"
 	echo "FREEBSD_MAJOR=13"
 	echo "NETBSD_MAJOR=10"
 	# Bypass openbsd cdn listing a release that is not out. (#36)
