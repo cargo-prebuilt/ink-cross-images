@@ -95,12 +95,13 @@ mkdir -p "$CROSS_SYSROOT"/usr/lib
 cp -r ./freebsd/usr/include "$CROSS_SYSROOT"/usr
 cp -r ./freebsd/lib/* "$CROSS_SYSROOT"/usr/lib
 
-cp ./freebsd/usr/lib/libc++.so.1 "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/libc++.a "$CROSS_SYSROOT"/usr/lib
+cp ./freebsd/usr/lib/libc++.so "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/libcxxrt.a "$CROSS_SYSROOT"/usr/lib
+cp ./freebsd/usr/lib/libcxxrt.so "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/{libcompiler_rt,libgcc}.a "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/lib{c,util,m,ssp_nonshared,memstat}.a "$CROSS_SYSROOT"/usr/lib
-cp ./freebsd/usr/lib/lib{rt,execinfo,procstat}.so.1 "$CROSS_SYSROOT"/usr/lib
+cp ./freebsd/usr/lib/lib{rt,execinfo,procstat}.so "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/libmemstat.so.3 "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/*crt*.o "$CROSS_SYSROOT"/usr/lib
 cp ./freebsd/usr/lib/libkvm.a "$CROSS_SYSROOT"/usr/lib

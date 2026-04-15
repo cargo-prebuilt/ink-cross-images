@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG DEBIAN_VERSION=12-slim
+ARG DEBIAN_VERSION=13-slim
 FROM debian:$DEBIAN_VERSION
 
 # Build Args
@@ -7,7 +7,7 @@ ARG EXT_CURL_CMD="curl --retry 3 -fsSL --tlsv1.2"
 ARG TARGETARCH
 
 # Versioning
-ARG CMAKE_VERSION=4.1.2
+ARG CMAKE_VERSION=4.3.1
 ENV CMAKE_VERSION=${CMAKE_VERSION}
 
 # Do not set
