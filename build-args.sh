@@ -3,12 +3,11 @@
 set -euxo pipefail
 
 {
-	echo "CMAKE_VERSION=4.1.2"
-	#echo "OPENSSL_VERSION=openssl-3.5.0"
-	echo "LLVM_VERSION=21"
+	echo "CMAKE_VERSION=4.3.1"
+	echo "LLVM_VERSION=22"
 	echo "MUSL_VERSION=1.2.5"
-	echo "ALPINE_VERSION=3.22"
-	echo "FREEBSD_MAJOR=13"
+	echo "ALPINE_VERSION=3.23"
+	echo "FREEBSD_MAJOR=14"
 	echo "NETBSD_MAJOR=10"
 	# Bypass openbsd cdn listing a release that is not out. (#36)
 	echo "OPENBSD_MAJOR=7.8"

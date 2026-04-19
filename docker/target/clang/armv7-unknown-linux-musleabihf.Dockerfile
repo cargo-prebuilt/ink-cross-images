@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1
 ARG IMG_BASE=ghcr.io/cargo-prebuilt/ink-cross:base-step2-clang-stable
-ARG ALPINE_VERSION=3
+ARG ALPINE_VERSION=3.23
 FROM alpine:$ALPINE_VERSION AS rooter
 
 ARG CROSS_TOOLCHAIN=arm-linux-musleabihf
 ARG APK_ARCH=armv7
 ARG CACHE_BUST=cache-v0
-ARG ALPINE_VERSION=3
+ARG ALPINE_VERSION=3.23
 
 # Script requires bash
 RUN apk --no-cache add bash
@@ -24,7 +24,7 @@ ARG TARGETARCH
 ARG CACHE_BUST=cache-v0
 
 # Versioning
-ARG OPENSSL_VERSION=openssl-3.6.0
+ARG OPENSSL_VERSION=openssl-3.6.2
 
 ARG RUST_TARGET=armv7-unknown-linux-musleabihf
 

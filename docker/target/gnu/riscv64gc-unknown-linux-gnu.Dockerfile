@@ -8,7 +8,7 @@ ARG TARGETARCH
 ARG CACHE_BUST=cache-v0
 
 # Versioning
-ARG OPENSSL_VERSION=openssl-3.6.0
+ARG OPENSSL_VERSION=openssl-3.6.2
 
 ARG RUST_TARGET=riscv64gc-unknown-linux-gnu
 
