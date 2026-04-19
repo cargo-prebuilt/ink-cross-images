@@ -23,7 +23,7 @@ if [ ! -e OPENSSL.CACHETAG ] || [[ $(< OPENSSL.CACHETAG) != "${CACHE_STR}" ]]; t
 
     AR="$CROSS_TOOLCHAIN_PREFIX"ar CC="$CROSS_TOOLCHAIN_PREFIX"gcc ./Configure "$OPENSSL_COMBO" \
         --libdir=lib --prefix="$CROSS_SYSROOT" --openssldir="/usr/local/$CROSS_TOOLCHAIN/ssl" \
-        no-dso no-shared no-ssl3 no-tests no-comp \
+        no-dso no-shared no-tests no-comp \
         no-legacy no-camellia no-idea no-seed
 
     make "-j$(nproc)"
