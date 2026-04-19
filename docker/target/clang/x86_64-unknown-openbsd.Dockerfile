@@ -12,7 +12,7 @@ ARG TARGETARCH
 ARG CACHE_BUST=cache-v0
 
 # Versioning
-ARG OPENSSL_VERSION=openssl-3.6.2
+ARG OPENSSL_VERSION=openssl-4.0.0
 # Bypass openbsd cdn listing a release that is not out. (#36)
 ARG OPENBSD_MAJOR=7.8
 
